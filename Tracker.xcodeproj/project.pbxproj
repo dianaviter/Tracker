@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		126EBD302D9ED4A4002C8133 /* TrackerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126EBD2F2D9ED49B002C8133 /* TrackerCell.swift */; };
+		126EBD342DA03FFF002C8133 /* TrackerSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126EBD332DA03FF8002C8133 /* TrackerSectionHeader.swift */; };
+		12A5F0BD2DA31E3B0062C399 /* CreateTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A5F0BC2DA31E370062C399 /* CreateTrackerViewController.swift */; };
 		12DBCF3A2D95F050005E6202 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DBCF392D95F050005E6202 /* AppDelegate.swift */; };
 		12DBCF3C2D95F050005E6202 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DBCF3B2D95F050005E6202 /* SceneDelegate.swift */; };
 		12DBCF3E2D95F050005E6202 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DBCF3D2D95F050005E6202 /* ViewController.swift */; };
@@ -15,9 +18,11 @@
 		12DBCF512D95F051005E6202 /* TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DBCF502D95F051005E6202 /* TrackerTests.swift */; };
 		12DBCF5B2D95F051005E6202 /* TrackerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DBCF5A2D95F051005E6202 /* TrackerUITests.swift */; };
 		12DBCF5D2D95F051005E6202 /* TrackerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DBCF5C2D95F051005E6202 /* TrackerUITestsLaunchTests.swift */; };
-		12DBCF6C2D95F711005E6202 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12DBCF692D95F711005E6202 /* YS Display-Bold.ttf */; };
-		12DBCF6D2D95F711005E6202 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12DBCF6A2D95F711005E6202 /* YS Display-Medium.ttf */; };
-		12DBCF6F2D95F82B005E6202 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DBCF6E2D95F82B005E6202 /* LaunchViewController.swift */; };
+		12DBCF712D95FC6C005E6202 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DBCF702D95FC6C005E6202 /* TabBarController.swift */; };
+		12DBCF732D96C8C0005E6202 /* TrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DBCF722D96C8C0005E6202 /* TrackerViewController.swift */; };
+		12DBCF752D96C93C005E6202 /* StatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DBCF742D96C93C005E6202 /* StatisticsViewController.swift */; };
+		12DBCF792D96E983005E6202 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12DBCF762D96E983005E6202 /* YS Display-Bold.ttf */; };
+		12DBCF7A2D96E983005E6202 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12DBCF772D96E983005E6202 /* YS Display-Medium.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +43,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		126EBD2F2D9ED49B002C8133 /* TrackerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCell.swift; sourceTree = "<group>"; };
+		126EBD332DA03FF8002C8133 /* TrackerSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerSectionHeader.swift; sourceTree = "<group>"; };
+		12A5F0BC2DA31E370062C399 /* CreateTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerViewController.swift; sourceTree = "<group>"; };
 		12DBCF362D95F050005E6202 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12DBCF392D95F050005E6202 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		12DBCF3B2D95F050005E6202 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -50,9 +58,11 @@
 		12DBCF562D95F051005E6202 /* TrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		12DBCF5A2D95F051005E6202 /* TrackerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerUITests.swift; sourceTree = "<group>"; };
 		12DBCF5C2D95F051005E6202 /* TrackerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		12DBCF692D95F711005E6202 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
-		12DBCF6A2D95F711005E6202 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
-		12DBCF6E2D95F82B005E6202 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
+		12DBCF702D95FC6C005E6202 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		12DBCF722D96C8C0005E6202 /* TrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerViewController.swift; sourceTree = "<group>"; };
+		12DBCF742D96C93C005E6202 /* StatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewController.swift; sourceTree = "<group>"; };
+		12DBCF762D96E983005E6202 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
+		12DBCF772D96E983005E6202 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,11 +116,16 @@
 				12DBCF392D95F050005E6202 /* AppDelegate.swift */,
 				12DBCF3B2D95F050005E6202 /* SceneDelegate.swift */,
 				12DBCF3D2D95F050005E6202 /* ViewController.swift */,
-				12DBCF6E2D95F82B005E6202 /* LaunchViewController.swift */,
+				126EBD2F2D9ED49B002C8133 /* TrackerCell.swift */,
+				12DBCF702D95FC6C005E6202 /* TabBarController.swift */,
+				12DBCF722D96C8C0005E6202 /* TrackerViewController.swift */,
+				126EBD332DA03FF8002C8133 /* TrackerSectionHeader.swift */,
+				12A5F0BC2DA31E370062C399 /* CreateTrackerViewController.swift */,
+				12DBCF742D96C93C005E6202 /* StatisticsViewController.swift */,
 				12DBCF422D95F051005E6202 /* Assets.xcassets */,
 				12DBCF442D95F051005E6202 /* LaunchScreen.storyboard */,
 				12DBCF472D95F051005E6202 /* Info.plist */,
-				12DBCF6B2D95F711005E6202 /* TrackerFonts */,
+				12DBCF782D96E983005E6202 /* TrackerFonts */,
 			);
 			path = Tracker;
 			sourceTree = "<group>";
@@ -132,13 +147,14 @@
 			path = TrackerUITests;
 			sourceTree = "<group>";
 		};
-		12DBCF6B2D95F711005E6202 /* TrackerFonts */ = {
+		12DBCF782D96E983005E6202 /* TrackerFonts */ = {
 			isa = PBXGroup;
 			children = (
-				12DBCF692D95F711005E6202 /* YS Display-Bold.ttf */,
-				12DBCF6A2D95F711005E6202 /* YS Display-Medium.ttf */,
+				12DBCF762D96E983005E6202 /* YS Display-Bold.ttf */,
+				12DBCF772D96E983005E6202 /* YS Display-Medium.ttf */,
 			);
-			path = TrackerFonts;
+			name = TrackerFonts;
+			path = ../../../Downloads/TrackerFonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -205,7 +221,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1540;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					12DBCF352D95F050005E6202 = {
 						CreatedOnToolsVersion = 15.4;
@@ -246,8 +262,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				12DBCF432D95F051005E6202 /* Assets.xcassets in Resources */,
-				12DBCF6D2D95F711005E6202 /* YS Display-Medium.ttf in Resources */,
-				12DBCF6C2D95F711005E6202 /* YS Display-Bold.ttf in Resources */,
+				12DBCF7A2D96E983005E6202 /* YS Display-Medium.ttf in Resources */,
+				12DBCF792D96E983005E6202 /* YS Display-Bold.ttf in Resources */,
 				12DBCF462D95F051005E6202 /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -273,10 +289,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12DBCF732D96C8C0005E6202 /* TrackerViewController.swift in Sources */,
 				12DBCF3E2D95F050005E6202 /* ViewController.swift in Sources */,
+				12DBCF712D95FC6C005E6202 /* TabBarController.swift in Sources */,
+				126EBD302D9ED4A4002C8133 /* TrackerCell.swift in Sources */,
+				126EBD342DA03FFF002C8133 /* TrackerSectionHeader.swift in Sources */,
+				12DBCF752D96C93C005E6202 /* StatisticsViewController.swift in Sources */,
 				12DBCF3A2D95F050005E6202 /* AppDelegate.swift in Sources */,
+				12A5F0BD2DA31E3B0062C399 /* CreateTrackerViewController.swift in Sources */,
 				12DBCF3C2D95F050005E6202 /* SceneDelegate.swift in Sources */,
-				12DBCF6F2D95F82B005E6202 /* LaunchViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
