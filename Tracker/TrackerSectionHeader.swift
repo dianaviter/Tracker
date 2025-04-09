@@ -10,7 +10,7 @@ import UIKit
 final class TrackerSectionHeader: UICollectionReusableView {
     let headerLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "YSDisplay-Bold", size: 19)
+        label.font = .systemFont(ofSize: 19, weight: .bold)
         label.textColor = .trackerBlack
         return label
     }()

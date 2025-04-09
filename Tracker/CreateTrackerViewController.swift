@@ -9,9 +9,45 @@ import UIKit
 
 final class CreateTrackerViewController: UIViewController {
     
+    let habitButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .trackerBlack
+        button.layer.cornerRadius = 16
+        button.clipsToBounds = true
+        button.setTitle("Привычка", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
+        button.titleLabel?.textColor = .white
+        return button
+    }()
+    
+    let irregularEventButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .trackerBlack
+        button.layer.cornerRadius = 16
+        button.clipsToBounds = true
+        button.setTitle("Нерегулярное событие", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
+        button.titleLabel?.textColor = .white
+        return button
+    }()
+    
+    let textLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Создание трекера"
+        label.textColor = .trackerBlack
+        label.font = .systemFont(ofSize: 16, weight: .medium)
+        return label
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpConstraints()
+        view.backgroundColor = .white
+        habitButton.addTarget(self, action: #selector(createHabitButtonTapped(_:)), for: .touchUpInside)
+    }
+    
+    @objc func createHabitButtonTapped(_ sender: UIButton) {
+        present(CreateNewHabitViewController(), animated: true)
     }
 
     private func setUpConstraints() {
@@ -24,48 +60,18 @@ final class CreateTrackerViewController: UIViewController {
         view.addSubview(textLabel)
         
         NSLayoutConstraint.activate([
-            textLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 78),
-            textLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 114),
-            textLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -112),
+            textLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            textLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            habitButton.topAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: 281),
+            habitButton.topAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: 295),
             habitButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             habitButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            habitButton.heightAnchor.constraint(equalToConstant: 60),
             
             irregularEventButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             irregularEventButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             irregularEventButton.topAnchor.constraint(equalTo: habitButton.bottomAnchor, constant: 16),
-            irregularEventButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 281)
+            irregularEventButton.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
-    
-    let habitButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .trackerBlack
-        button.layer.cornerRadius = 16
-        button.clipsToBounds = true
-        button.setTitle("Привычка", for: .normal)
-        button.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 16)
-        button.titleLabel?.textColor = .white
-        return button
-    }()
-    
-    let irregularEventButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .trackerBlack
-        button.layer.cornerRadius = 16
-        button.clipsToBounds = true
-        button.setTitle("Нерегулярное событие", for: .normal)
-        button.titleLabel?.font = UIFont(name: "YSDisplay-Medium", size: 16)
-        button.titleLabel?.textColor = .white
-        return button
-    }()
-    
-    let textLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Создание трекера"
-        label.textColor = .white
-        label.font = UIFont(name: "YSDisplay-Medium", size: 16)
-        return label
-    }()
 }

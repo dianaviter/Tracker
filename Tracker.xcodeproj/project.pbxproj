@@ -10,6 +10,9 @@
 		126EBD302D9ED4A4002C8133 /* TrackerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126EBD2F2D9ED49B002C8133 /* TrackerCell.swift */; };
 		126EBD342DA03FFF002C8133 /* TrackerSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126EBD332DA03FF8002C8133 /* TrackerSectionHeader.swift */; };
 		12A5F0BD2DA31E3B0062C399 /* CreateTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A5F0BC2DA31E370062C399 /* CreateTrackerViewController.swift */; };
+		12A5F0BF2DA425540062C399 /* CreateNewHabitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A5F0BE2DA425420062C399 /* CreateNewHabitViewController.swift */; };
+		12A5F0C12DA4663B0062C399 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A5F0C02DA466340062C399 /* CategoryViewController.swift */; };
+		12A5F0C32DA4667E0062C399 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A5F0C22DA466750062C399 /* ScheduleViewController.swift */; };
 		12DBCF3A2D95F050005E6202 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DBCF392D95F050005E6202 /* AppDelegate.swift */; };
 		12DBCF3C2D95F050005E6202 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DBCF3B2D95F050005E6202 /* SceneDelegate.swift */; };
 		12DBCF3E2D95F050005E6202 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DBCF3D2D95F050005E6202 /* ViewController.swift */; };
@@ -46,6 +49,9 @@
 		126EBD2F2D9ED49B002C8133 /* TrackerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCell.swift; sourceTree = "<group>"; };
 		126EBD332DA03FF8002C8133 /* TrackerSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerSectionHeader.swift; sourceTree = "<group>"; };
 		12A5F0BC2DA31E370062C399 /* CreateTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerViewController.swift; sourceTree = "<group>"; };
+		12A5F0BE2DA425420062C399 /* CreateNewHabitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewHabitViewController.swift; sourceTree = "<group>"; };
+		12A5F0C02DA466340062C399 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
+		12A5F0C22DA466750062C399 /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		12DBCF362D95F050005E6202 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12DBCF392D95F050005E6202 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		12DBCF3B2D95F050005E6202 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -121,6 +127,9 @@
 				12DBCF722D96C8C0005E6202 /* TrackerViewController.swift */,
 				126EBD332DA03FF8002C8133 /* TrackerSectionHeader.swift */,
 				12A5F0BC2DA31E370062C399 /* CreateTrackerViewController.swift */,
+				12A5F0BE2DA425420062C399 /* CreateNewHabitViewController.swift */,
+				12A5F0C02DA466340062C399 /* CategoryViewController.swift */,
+				12A5F0C22DA466750062C399 /* ScheduleViewController.swift */,
 				12DBCF742D96C93C005E6202 /* StatisticsViewController.swift */,
 				12DBCF422D95F051005E6202 /* Assets.xcassets */,
 				12DBCF442D95F051005E6202 /* LaunchScreen.storyboard */,
@@ -292,11 +301,14 @@
 				12DBCF732D96C8C0005E6202 /* TrackerViewController.swift in Sources */,
 				12DBCF3E2D95F050005E6202 /* ViewController.swift in Sources */,
 				12DBCF712D95FC6C005E6202 /* TabBarController.swift in Sources */,
+				12A5F0C32DA4667E0062C399 /* ScheduleViewController.swift in Sources */,
 				126EBD302D9ED4A4002C8133 /* TrackerCell.swift in Sources */,
+				12A5F0BF2DA425540062C399 /* CreateNewHabitViewController.swift in Sources */,
 				126EBD342DA03FFF002C8133 /* TrackerSectionHeader.swift in Sources */,
 				12DBCF752D96C93C005E6202 /* StatisticsViewController.swift in Sources */,
 				12DBCF3A2D95F050005E6202 /* AppDelegate.swift in Sources */,
 				12A5F0BD2DA31E3B0062C399 /* CreateTrackerViewController.swift in Sources */,
+				12A5F0C12DA4663B0062C399 /* CategoryViewController.swift in Sources */,
 				12DBCF3C2D95F050005E6202 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -12,6 +12,51 @@ final class TrackerCell: UICollectionViewCell {
     let trackerController = TrackerViewController()
     var updateNumberOfDays: (() -> Void)?
     
+    private let cellEmoji: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14, weight: .medium)
+        return label
+    }()
+    
+    private let cellTextLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 12, weight: .medium)
+        label.textColor = .trackerWhite
+        label.numberOfLines = 2
+        return label
+    }()
+    
+    private let cellDays: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 12, weight: .medium)
+        label.numberOfLines = 1
+        label.textColor = .trackerBlack
+        return label
+    }()
+    
+    private let cellButton: UIButton = {
+        let button = UIButton()
+        button.layer.cornerRadius = 17
+        button.clipsToBounds = true
+        button.tintColor = .white
+        return button
+    }()
+    
+    private let cellBackground: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 16
+        view.clipsToBounds = true
+        return view
+    }()
+    
+    private let emojiBackground: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.white.withAlphaComponent(0.3)
+        view.layer.cornerRadius = 12
+        view.clipsToBounds = true
+        return view
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUpConstraints()
@@ -81,49 +126,4 @@ final class TrackerCell: UICollectionViewCell {
             cellButton.heightAnchor.constraint(equalToConstant: 34)
         ])
     }
-    
-    private let cellEmoji: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: "YSDisplay-Medium", size: 14)
-        return label
-    }()
-    
-    private let cellTextLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: "YSDisplay-Medium", size: 12)
-        label.textColor = .trackerWhite
-        label.numberOfLines = 2
-        return label
-    }()
-    
-    private let cellDays: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: "YSDisplay-Medium", size: 12)
-        label.numberOfLines = 1
-        label.textColor = .trackerBlack
-        return label
-    }()
-    
-    private let cellButton: UIButton = {
-        let button = UIButton()
-        button.layer.cornerRadius = 17
-        button.clipsToBounds = true
-        button.tintColor = .white
-        return button
-    }()
-    
-    private let cellBackground: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 16
-        view.clipsToBounds = true
-        return view
-    }()
-    
-    private let emojiBackground: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.white.withAlphaComponent(0.3)
-        view.layer.cornerRadius = 12
-        view.clipsToBounds = true
-        return view
-    }()
 }

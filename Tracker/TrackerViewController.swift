@@ -7,6 +7,8 @@
 
 import UIKit
 
+// MARK: - Models
+
 struct Tracker {
     let id: UUID
     let name: String?
@@ -29,7 +31,12 @@ struct TrackerRecord {
     let date: Date?
 }
 
+// MARK: - ViewController
+
 final class TrackerViewController: UIViewController {
+    
+    // MARK: - Properties
+    
     var categories: [TrackerCategory] = []
     var completedTrackers: [TrackerRecord] = []
     var filteredCategories: [TrackerCategory] = []
@@ -42,11 +49,60 @@ final class TrackerViewController: UIViewController {
         return collectionView
     }()
     
+    // MARK: - UI Elements
+    
+    private let firstTrackerImageView: UIImageView = {
+        let image = UIImage(named: "createFirstTrackerImage")
+        let imageView = UIImageView(image: image)
+        imageView.frame = CGRect(x: 147, y: 402, width: 80, height: 80)
+        return imageView
+    }()
+    
+    private let imageTextLabel: UILabel = {
+        let textLabel = UILabel()
+        textLabel.text = "Что будем отслеживать?"
+        textLabel.font = .systemFont(ofSize: 12, weight: .medium)
+        textLabel.textColor = .trackerBlack
+        return textLabel
+    }()
+    
+    private let trackerLabel: UILabel = {
+        let textLabel = UILabel()
+        textLabel.text = "Трекеры"
+        textLabel.font = .systemFont(ofSize: 34, weight: .bold)
+        textLabel.textColor = .trackerBlack
+        return textLabel
+    }()
+    
+    private let addTracker: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "addTracker"), for: .normal)
+        return button
+    }()
+    
+    private let searchButton: UISearchTextField = {
+        let searchbar = UISearchTextField()
+        searchbar.placeholder = "Поиск"
+        searchbar.backgroundColor = .white
+        return searchbar
+    }()
+    
+    private let datePicker: UIDatePicker = {
+        let picker = UIDatePicker()
+        picker.datePickerMode = .date
+        picker.locale = Locale(identifier: "ru_RU")
+        picker.preferredDatePickerStyle = .compact
+        return picker
+    }()
+    
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .trackerWhite
         setUpConstraints()
         datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
+        addTracker.addTarget(self, action: #selector(addButtonCLicked(_:)), for: .touchUpInside)
         
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -59,15 +115,7 @@ final class TrackerViewController: UIViewController {
         showContentOrPlaceholder()
     }
     
-        private func showContentOrPlaceholder() {
-            let hasTrackers = filteredCategories.contains { !$0.trackers.isEmpty
-            }
-            collectionView.isHidden = !hasTrackers
-            firstTrackerImageView.isHidden = hasTrackers
-            imageTextLabel.isHidden = hasTrackers
-    
-            collectionView.reloadData()
-        }
+    // MARK: - Actions
     
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
         let selectedDate = sender.date
@@ -83,8 +131,25 @@ final class TrackerViewController: UIViewController {
             }
             return TrackerCategory(header: category.header, trackers: filteredTrackers)
         }.filter { !$0.trackers.isEmpty }
-
+        
         showContentOrPlaceholder()
+    }
+    
+    @objc func addButtonCLicked(_ sender: UIButton) {
+        let vc = CreateTrackerViewController()
+        present(vc, animated: true)
+    }
+    
+    // MARK: - Actions
+    
+    private func showContentOrPlaceholder() {
+        let hasTrackers = filteredCategories.contains { !$0.trackers.isEmpty
+        }
+        collectionView.isHidden = !hasTrackers
+        firstTrackerImageView.isHidden = hasTrackers
+        imageTextLabel.isHidden = hasTrackers
+        
+        collectionView.reloadData()
     }
     
     private func updateTrackers(for date: Date) {
@@ -92,19 +157,19 @@ final class TrackerViewController: UIViewController {
         formatter.locale = Locale(identifier: "ru_RU")
         formatter.dateFormat = "EEEE"
         let selectedDay = formatter.string(from: date).capitalized
-
+        
         let newTracker = Tracker(id: UUID(), name: "New Tracker", color: .trackerRed, emoji: "😻", schedule: Schedule(dayOfWeek: selectedDay))
         let newTracker12 = Tracker(id: UUID(), name: "New Tracker", color: .trackerRed, emoji: "😻", schedule: Schedule(dayOfWeek: selectedDay))
         let newTracker13 = Tracker(id: UUID(), name: "New Tracker", color: .trackerRed, emoji: "😻", schedule: Schedule(dayOfWeek: selectedDay))
         let newCategory = TrackerCategory(header: "New Category", trackers: [newTracker, newTracker12, newTracker13])
         let newTracker2 = Tracker(id: UUID(), name: "New Tracker2", color: .trackerRed, emoji: "😻", schedule: Schedule(dayOfWeek: selectedDay))
         let newCategory2 = TrackerCategory(header: "New Category2", trackers: [newTracker2])
-
+        
         filteredCategories = [newCategory, newCategory2]
         collectionView.reloadData()
     }
-
     
+    // MARK: - Layout
     
     private func setUpConstraints() {
         let tabBarHeight = tabBarController?.tabBar.frame.height ?? 84
@@ -145,51 +210,9 @@ final class TrackerViewController: UIViewController {
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -tabBarHeight)
         ])
     }
-    
-    private let firstTrackerImageView: UIImageView = {
-        let image = UIImage(named: "createFirstTrackerImage")
-        let imageView = UIImageView(image: image)
-        imageView.frame = CGRect(x: 147, y: 402, width: 80, height: 80)
-        return imageView
-    }()
-    
-    private let imageTextLabel: UILabel = {
-        let textLabel = UILabel()
-        textLabel.text = "Что будем отслеживать?"
-        textLabel.font = UIFont(name: "YSDisplay-Medium", size: 12)
-        textLabel.textColor = .trackerBlack
-        return textLabel
-    }()
-    
-    private let trackerLabel: UILabel = {
-        let textLabel = UILabel()
-        textLabel.text = "Трекеры"
-        textLabel.font = UIFont(name: "YSDisplay-Bold", size: 34)
-        textLabel.textColor = .trackerBlack
-        return textLabel
-    }()
-    
-    private let addTracker: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(named: "addTracker"), for: .normal)
-        return button
-    }()
-    
-    private let searchButton: UISearchTextField = {
-        let searchbar = UISearchTextField()
-        searchbar.placeholder = "Поиск"
-        searchbar.backgroundColor = .white
-        return searchbar
-    }()
-    
-    private let datePicker: UIDatePicker = {
-        let picker = UIDatePicker()
-        picker.datePickerMode = .date
-        picker.locale = Locale(identifier: "ru_RU")
-        picker.preferredDatePickerStyle = .compact
-        return picker
-    }()
 }
+
+// MARK: - UICollectionViewDataSource
 
 extension TrackerViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -248,6 +271,8 @@ extension TrackerViewController: UICollectionViewDataSource {
         return view ?? UICollectionReusableView()
     }
 }
+
+// MARK: - UICollectionViewDelegateFlowLayout
 
 extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
