@@ -25,8 +25,6 @@
 		12DBCF712D95FC6C005E6202 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DBCF702D95FC6C005E6202 /* TabBarController.swift */; };
 		12DBCF732D96C8C0005E6202 /* TrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DBCF722D96C8C0005E6202 /* TrackerViewController.swift */; };
 		12DBCF752D96C93C005E6202 /* StatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DBCF742D96C93C005E6202 /* StatisticsViewController.swift */; };
-		12DBCF792D96E983005E6202 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12DBCF762D96E983005E6202 /* YS Display-Bold.ttf */; };
-		12DBCF7A2D96E983005E6202 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12DBCF772D96E983005E6202 /* YS Display-Medium.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,8 +67,6 @@
 		12DBCF702D95FC6C005E6202 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		12DBCF722D96C8C0005E6202 /* TrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerViewController.swift; sourceTree = "<group>"; };
 		12DBCF742D96C93C005E6202 /* StatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewController.swift; sourceTree = "<group>"; };
-		12DBCF762D96E983005E6202 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
-		12DBCF772D96E983005E6202 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,7 +157,6 @@
 				12DBCF422D95F051005E6202 /* Assets.xcassets */,
 				12DBCF442D95F051005E6202 /* LaunchScreen.storyboard */,
 				12DBCF472D95F051005E6202 /* Info.plist */,
-				12DBCF782D96E983005E6202 /* TrackerFonts */,
 			);
 			path = Tracker;
 			sourceTree = "<group>";
@@ -181,16 +176,6 @@
 				12DBCF5C2D95F051005E6202 /* TrackerUITestsLaunchTests.swift */,
 			);
 			path = TrackerUITests;
-			sourceTree = "<group>";
-		};
-		12DBCF782D96E983005E6202 /* TrackerFonts */ = {
-			isa = PBXGroup;
-			children = (
-				12DBCF762D96E983005E6202 /* YS Display-Bold.ttf */,
-				12DBCF772D96E983005E6202 /* YS Display-Medium.ttf */,
-			);
-			name = TrackerFonts;
-			path = ../../../Downloads/TrackerFonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -298,8 +283,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				12DBCF432D95F051005E6202 /* Assets.xcassets in Resources */,
-				12DBCF7A2D96E983005E6202 /* YS Display-Medium.ttf in Resources */,
-				12DBCF792D96E983005E6202 /* YS Display-Bold.ttf in Resources */,
 				12DBCF462D95F051005E6202 /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
