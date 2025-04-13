@@ -108,6 +108,10 @@ final class CreateNewHabitViewController: UIViewController {
         trackerNameTextField.rightView = clearButton
         trackerNameTextField.rightViewMode = .always
         
+        let tapGestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGestureRecogniser.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGestureRecogniser)
+        
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped(_:)), for: .touchUpInside)
         createButton.addTarget(self, action: #selector(createButtonTapped(_:)), for: .touchUpInside)
         trackerNameTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
@@ -142,6 +146,10 @@ final class CreateNewHabitViewController: UIViewController {
         clearButton.isHidden = true
         errorLabel.isHidden = true
         updateTableViewConstraint()
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     // MARK: - Logic
@@ -346,5 +354,10 @@ extension CreateNewHabitViewController: UITextFieldDelegate {
             updateTableViewConstraint()
         }
         return !isTooLong
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

@@ -107,6 +107,10 @@ final class CreateIrregularEventViewController: UIViewController {
         trackerNameTextField.rightView = clearButton
         trackerNameTextField.rightViewMode = .always
         
+        let tapGestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGestureRecogniser.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGestureRecogniser)
+        
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped(_:)), for: .touchUpInside)
         createButton.addTarget(self, action: #selector(createButtonTapped(_:)), for: .touchUpInside)
         trackerNameTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
@@ -141,6 +145,10 @@ final class CreateIrregularEventViewController: UIViewController {
         clearButton.isHidden = true
         errorLabel.isHidden = true
         updateTableViewConstraint()
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     // MARK: - Logic
@@ -182,7 +190,7 @@ final class CreateIrregularEventViewController: UIViewController {
         
         tableViewTopConstraint = tableView.topAnchor.constraint(equalTo: trackerNameTextField.bottomAnchor, constant: 24)
         
-        if let tableViewTopConstraint = tableViewTopConstraint {
+        guard let tableViewTopConstraint = tableViewTopConstraint else { return }
             NSLayoutConstraint.activate([
                 textLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
                 textLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -211,11 +219,11 @@ final class CreateIrregularEventViewController: UIViewController {
                 errorLabel.topAnchor.constraint(equalTo: trackerNameTextField.bottomAnchor, constant: 8)
             ])
         }
-    }
     
     private func updateTableViewConstraint() {
         tableViewTopConstraint?.constant = errorLabel.isHidden ? 24 : 63
-        UIView.animate(withDuration: 0.25) {
+        DispatchQueue.main.async {
+            self.view.setNeedsLayout()
             self.view.layoutIfNeeded()
         }
     }

@@ -264,33 +264,30 @@ extension TrackerViewController: UICollectionViewDataSource {
     }
     
     internal func collectionView(_: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        var id: String
-        
-        switch kind {
-        case UICollectionView.elementKindSectionHeader:
-            id = "header"
-        case UICollectionView.elementKindSectionFooter:
-            id = "footer"
-        default:
-            id = ""
-        }
-        
-        let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: id, for: indexPath) as? TrackerSectionHeader
-        view?.headerLabel.text = filteredCategories[indexPath.section].header
-        return view ?? UICollectionReusableView()
+        guard kind == UICollectionView.elementKindSectionHeader else {
+                fatalError("Unsupported kind: \(kind)")
+            }
+            
+            guard let header = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: "header",
+                for: indexPath
+            ) as? TrackerSectionHeader else {
+                fatalError("Could not dequeue TrackerSectionHeader")
+            }
+
+            header.headerLabel.text = filteredCategories[indexPath.section].header
+            return header
     }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
 
 extension TrackerViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        let indexPath = IndexPath(row: 0, section: section)
-        
-        let headerView = self.collectionView(collectionView, viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader, at: indexPath)
-        return headerView.systemLayoutSizeFitting(
-            CGSize(width: collectionView.frame.width, height: 18)
-        )
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 44)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
