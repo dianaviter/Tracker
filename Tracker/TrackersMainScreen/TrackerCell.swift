@@ -8,8 +8,7 @@
 import UIKit
 
 final class TrackerCell: UICollectionViewCell {
-    let cellIdentifier = "cell"
-    let trackerController = TrackerViewController()
+    static let cellIdentifier = "cell"
     var onPlusTapped: (() -> Void)?
     
     private let cellEmoji: UILabel = {
@@ -74,8 +73,18 @@ final class TrackerCell: UICollectionViewCell {
     func configure(tracker: Tracker, isCompleted: Bool, daysCount: Int) {
         cellTextLabel.text = tracker.name
         cellEmoji.text = tracker.emoji ?? "🙂"
-        cellDays.text = "\(daysCount) дней"
         cellBackground.backgroundColor = tracker.color
+        
+        let remainder10 = daysCount % 10
+        let remainder100 = daysCount % 100
+        
+        if remainder10 == 1 && !(11...19).contains(remainder100) {
+            cellDays.text = ("\(daysCount) день")
+        } else if (2...4).contains(remainder10) && !(11...19).contains(remainder100) {
+            cellDays.text = ("\(daysCount) дня")
+        } else {
+            cellDays.text = ("\(daysCount) дней")
+        }
         
         if isCompleted {
             cellButton.backgroundColor = tracker.color?.withAlphaComponent(0.8)

@@ -7,37 +7,16 @@
 
 import UIKit
 
-// MARK: - Models
-
-struct Tracker {
-    let id: UUID
-    let name: String?
-    let color: UIColor?
-    let emoji: String?
-    let schedule: Set<WeekDay>?
-}
-
-struct TrackerCategory {
-    let header: String?
-    let trackers: [Tracker]
-}
-
-struct TrackerRecord {
-    let id: UUID
-    let date: Date
-}
-
 // MARK: - ViewController
 
 final class TrackerViewController: UIViewController {
     
     // MARK: - Properties
     
-    var categories: [TrackerCategory] = []
-    var completedTrackers: [TrackerRecord] = []
-    var filteredCategories: [TrackerCategory] = []
-    let cellIdentifier = "cell"
-    var numberOfDays = 0
+    private var categories: [TrackerCategory] = []
+    private var completedTrackers: [TrackerRecord] = []
+    private var filteredCategories: [TrackerCategory] = []
+    private var numberOfDays = 0
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -45,8 +24,8 @@ final class TrackerViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         return collectionView
     }()
-    var defaultCategory = TrackerCategory(header: "Все трекеры", trackers: [])
-    var currentDate = Date()
+    private var defaultCategory = TrackerCategory(header: "Все трекеры", trackers: [])
+    private var currentDate = Date()
     
     // MARK: - UI Elements
     
@@ -89,7 +68,6 @@ final class TrackerViewController: UIViewController {
     private let datePicker: UIDatePicker = {
         let picker = UIDatePicker()
         picker.datePickerMode = .date
-        picker.locale = Locale(identifier: "ru_RU")
         picker.preferredDatePickerStyle = .compact
         return picker
     }()
@@ -105,7 +83,7 @@ final class TrackerViewController: UIViewController {
         
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.register(TrackerCell.self, forCellWithReuseIdentifier: cellIdentifier)
+        collectionView.register(TrackerCell.self, forCellWithReuseIdentifier: TrackerCell.cellIdentifier)
         collectionView.register(TrackerSectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         
         datePicker.date = currentDate
@@ -229,7 +207,7 @@ final class TrackerViewController: UIViewController {
             datePicker.centerYAnchor.constraint(equalTo: addTracker.centerYAnchor),
             datePicker.heightAnchor.constraint(equalToConstant: 34),
             
-            collectionView.topAnchor.constraint(equalTo: searchButton.bottomAnchor, constant: 10),
+            collectionView.topAnchor.constraint(equalTo: searchButton.bottomAnchor, constant: 24),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -tabBarHeight)
@@ -249,7 +227,7 @@ extension TrackerViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? TrackerCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerCell.cellIdentifier, for: indexPath) as? TrackerCell
         let tracker = filteredCategories[indexPath.section].trackers[indexPath.item]
         let isCompleted = completedTrackers.contains { $0.id == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: datePicker.date) }
         let daysCount = completedTrackers.filter { $0.id == tracker.id }.count

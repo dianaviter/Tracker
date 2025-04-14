@@ -189,15 +189,7 @@ final class CreateNewHabitViewController: UIViewController {
             cell.detailTextLabel?.text = nil
         } else {
             let dayNames = sortedDays.map {
-                switch $0 {
-                case .monday: "Пн"
-                case .tuesday: "Вт"
-                case .wednesday: "Ср"
-                case .thursday: "Чт"
-                case .friday: "Пт"
-                case .saturday: "Сб"
-                case .sunday: "Вс"
-                }
+                $0.shortName
             }
         }
         tableView.reloadRows(at: [indexPath], with: .automatic)
@@ -259,7 +251,9 @@ final class CreateNewHabitViewController: UIViewController {
     }
     
     private func updateTableViewConstraint() {
-        tableViewTopConstraint?.constant = errorLabel.isHidden ? 24 : 63
+        let indentWithoutError = 24
+        let indentWithError = 63
+        tableViewTopConstraint?.constant = CGFloat(errorLabel.isHidden ? indentWithoutError : indentWithError)
         UIView.animate(withDuration: 0.25) {
             self.view.layoutIfNeeded()
         }
@@ -284,15 +278,7 @@ extension CreateNewHabitViewController: UITableViewDataSource {
         let sortedDays = sortDays(selectedDaysInScheduleViewController)
         if indexPath.row == 1 && !sortedDays.isEmpty {
             let dayNames = sortedDays.map {
-                switch $0 {
-                case .monday: "Пн"
-                case .tuesday: "Вт"
-                case .wednesday: "Ср"
-                case .thursday: "Чт"
-                case .friday: "Пт"
-                case .saturday: "Сб"
-                case .sunday: "Вс"
-                }
+                $0.shortName
             }
             if WeekDay.allCases.count == sortedDays.count {
                 cell.detailTextLabel?.text = "Каждый день"

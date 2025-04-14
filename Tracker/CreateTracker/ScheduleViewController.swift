@@ -17,6 +17,17 @@ enum WeekDay: String, CaseIterable {
     case friday = "Пятница"
     case saturday = "Суббота"
     case sunday = "Воскресенье"
+    
+    var shortName: String {
+        let exception: [WeekDay: String] = [
+            .monday: "Пн",
+            .thursday: "Чт",
+            .friday: "Пт",
+            .saturday: "Сб",
+            .sunday: "Вс"
+        ]
+        return exception[self] ?? String(rawValue.prefix(2))
+    }
 }
 
 // MARK: - View Controller
