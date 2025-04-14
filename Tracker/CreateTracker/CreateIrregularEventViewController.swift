@@ -12,7 +12,6 @@ final class CreateIrregularEventViewController: UIViewController {
     // MARK: - Properties
     
     let tableOptions: [String] = ["Категория"]
-    let cellIdentifier = "cell"
     var defaultCategory = TrackerCategory(header: "Все трекеры", trackers: [])
     var onCreateTracker: ((Tracker) -> Void)?
     private var tableViewTopConstraint: NSLayoutConstraint?
@@ -237,7 +236,7 @@ extension CreateIrregularEventViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: TrackerCell.cellIdentifier)
         cell.textLabel?.text = tableOptions[indexPath.row]
         cell.textLabel?.font = .systemFont(ofSize: 17, weight: .regular)
         cell.textLabel?.textColor = .black
