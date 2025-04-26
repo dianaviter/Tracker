@@ -33,6 +33,7 @@ final class TabBarController: UITabBarController {
         separator.backgroundColor = .trackerGray
         separator.translatesAutoresizingMaskIntoConstraints = false
         tabBar.addSubview(separator)
+        tabBar.backgroundColor = .trackerWhite
         
         NSLayoutConstraint.activate([
             separator.leadingAnchor.constraint(equalTo: tabBar.leadingAnchor),

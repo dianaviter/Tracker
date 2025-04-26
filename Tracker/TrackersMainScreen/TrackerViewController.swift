@@ -24,8 +24,10 @@ final class TrackerViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         return collectionView
     }()
-    private var defaultCategory = TrackerCategory(header: "Все трекеры", trackers: [])
     private var currentDate = Date()
+    private var trackerStore: TrackerStore?
+    private var coreDataStack = CoreDataStack()
+    private var trackerRecordStore: TrackerRecordStore?
     
     // MARK: - UI Elements
     
@@ -76,6 +78,7 @@ final class TrackerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = .trackerWhite
         setUpConstraints()
         datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
@@ -87,7 +90,8 @@ final class TrackerViewController: UIViewController {
         collectionView.register(TrackerSectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         
         datePicker.date = currentDate
-        showContentOrPlaceholder()
+        
+        initializeStores()
     }
     
     // MARK: - Actions
@@ -135,6 +139,25 @@ final class TrackerViewController: UIViewController {
     
     // MARK: - Actions
     
+    private func initializeStores() {
+        let context = coreDataStack.persistentContainer.viewContext
+        
+        do {
+            trackerStore = try TrackerStore(context: context)
+            trackerRecordStore = try TrackerRecordStore(context: context)
+            trackerStore?.delegate = self
+            if let trackers = try? trackerStore?.trackers() {
+                categories = [TrackerCategory(header: "Все трекеры", trackers: trackers)]
+            }
+            if let records = try? trackerRecordStore?.trackerRecords() {
+                completedTrackers = records
+            }
+            datePickerValueChanged(datePicker)
+        } catch {
+            print("Ошибка инициализации TrackerStore: \(error)")
+        }
+    }
+    
     private func showContentOrPlaceholder() {
         let hasTrackers = filteredCategories.contains { !$0.trackers.isEmpty
         }
@@ -146,6 +169,8 @@ final class TrackerViewController: UIViewController {
     }
     
     func addNewTracker(_ tracker: Tracker) {
+        try? trackerStore?.addTracker(tracker)
+        
         if let index = categories.firstIndex(where: { $0.header == "Все категории" }) {
             let oldCategory = categories[index]
             let updatedTrackers = oldCategory.trackers + [tracker]
@@ -166,9 +191,14 @@ final class TrackerViewController: UIViewController {
             $0.id == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: self.datePicker.date)
         }
         if let index = existingIndex {
+            let record = completedTrackers[index]
             completedTrackers.remove(at: index)
+            if let recordCoreData = try? trackerRecordStore?.record(for: record) {
+                        try? trackerRecordStore?.deleteRecord(recordCoreData)
+                    }
         } else {
             completedTrackers.append(TrackerRecord(id: tracker.id, date: datePicker.date))
+            try? trackerRecordStore?.addTrackerRecord(TrackerRecord(id: tracker.id, date: datePicker.date))
         }
     }
     
@@ -283,5 +313,19 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 9
+    }
+}
+
+extension TrackerViewController: TrackerStoreDelegate {
+    func store(_ store: TrackerStore, didUpdate update: TrackerStoreUpdate) {
+        do {
+            let trackers = try store.trackers()
+            categories = [TrackerCategory(header: "Все категории", trackers: trackers)]
+            datePickerValueChanged(datePicker)
+            
+            collectionView.reloadData()
+        } catch {
+            print("Ошибка загрузки трекеров: \(error)")
+        }
     }
 }
