@@ -17,8 +17,17 @@ final class CreateNewHabitViewController: UIViewController {
     var defaultCategory = TrackerCategory(header: "Все трекеры", trackers: [])
     var onCreateTracker: ((Tracker) -> Void)?
     private var tableViewTopConstraint: NSLayoutConstraint?
+    let emojiCollection = EmojiCollectionView()
+    var selectedEmoji = ""
+    let colorCollection = TrackerColorCollectionView()
+    var selectedColor = UIColor()
+    private var isEmojiSelected = false
+    private var isColorSelected = false
     
     // MARK: - UI Elements
+    
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
     
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
@@ -38,6 +47,7 @@ final class CreateNewHabitViewController: UIViewController {
         label.text = "Новая привычка"
         label.textColor = .trackerBlack
         label.font = .systemFont(ofSize: 16, weight: .medium)
+        label.textAlignment = .center
         return label
     }()
     
@@ -112,6 +122,18 @@ final class CreateNewHabitViewController: UIViewController {
         tapGestureRecogniser.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGestureRecogniser)
         
+        emojiCollection.onEmojiSelected = { [weak self] emoji in
+            self?.isEmojiSelected = true
+            self?.selectedEmoji = emoji
+            self?.activateCreateButton()
+        }
+        
+        colorCollection.onSelectedColor = { [weak self] color in
+            self?.isColorSelected = true
+            self?.selectedColor = color
+            self?.activateCreateButton()
+        }
+        
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped(_:)), for: .touchUpInside)
         createButton.addTarget(self, action: #selector(createButtonTapped(_:)), for: .touchUpInside)
         trackerNameTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
@@ -128,8 +150,8 @@ final class CreateNewHabitViewController: UIViewController {
         let newTracker = Tracker(
             id: UUID(),
             name: trackerNameTextField.text,
-            color: .trackerRed,
-            emoji: "🙂",
+            color: selectedColor,
+            emoji: selectedEmoji,
             schedule: Set(selectedDaysInScheduleViewController)
         )
         onCreateTracker?(newTracker)
@@ -159,7 +181,11 @@ final class CreateNewHabitViewController: UIViewController {
         let secondLineTableView = tableView.cellForRow(at: IndexPath(row: 1, section: 0))
         let name = trackerNameTextField.text?.trimmingCharacters(in: .whitespaces) ?? ""
         
-        if !name.isEmpty && firstLineTableView?.detailTextLabel?.text != nil && secondLineTableView?.detailTextLabel?.text != nil {
+        if !name.isEmpty
+            && firstLineTableView?.detailTextLabel?.text != nil
+            && secondLineTableView?.detailTextLabel?.text != nil
+            && isEmojiSelected == true
+            && isColorSelected == true {
             createButton.isEnabled = true
             createButton.backgroundColor = .trackerBlack
             createButton.titleLabel?.textColor = .trackerWhite
@@ -206,46 +232,73 @@ final class CreateNewHabitViewController: UIViewController {
     // MARK: - Layout
     
     private func setUpConstraints() {
-        [tableView, textLabel, trackerNameTextField, cancelButton, createButton, errorLabel].forEach {
+        [scrollView, contentView, tableView, textLabel, trackerNameTextField, cancelButton, createButton, errorLabel, colorCollection, emojiCollection].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
-        view.addSubview(tableView)
-        view.addSubview(trackerNameTextField)
         view.addSubview(textLabel)
-        view.addSubview(cancelButton)
-        view.addSubview(createButton)
-        view.addSubview(errorLabel)
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubview(tableView)
+        contentView.addSubview(trackerNameTextField)
+        contentView.addSubview(cancelButton)
+        contentView.addSubview(createButton)
+        contentView.addSubview(errorLabel)
+        contentView.addSubview(colorCollection)
+        contentView.addSubview(emojiCollection)
         
         tableViewTopConstraint = tableView.topAnchor.constraint(equalTo: trackerNameTextField.bottomAnchor, constant: 24)
         
         if let tableViewTopConstraint = tableViewTopConstraint {
             NSLayoutConstraint.activate([
-                textLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+                textLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
                 textLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                 
-                trackerNameTextField.topAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: 38),
-                trackerNameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-                trackerNameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+                scrollView.topAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: 14),
+                scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+                scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                
+                contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+                contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+                contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+                contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+                contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+                
+                trackerNameTextField.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 24),
+                trackerNameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+                trackerNameTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
                 trackerNameTextField.heightAnchor.constraint(equalToConstant: 75),
                 
                 tableViewTopConstraint,
-                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-                tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+                tableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+                tableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
                 tableView.heightAnchor.constraint(equalToConstant: 150),
                 
-                cancelButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+                cancelButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
                 cancelButton.heightAnchor.constraint(equalToConstant: 60),
                 cancelButton.trailingAnchor.constraint(equalTo: createButton.leadingAnchor, constant: -8),
-                cancelButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+                cancelButton.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -16),
                 cancelButton.widthAnchor.constraint(equalTo: createButton.widthAnchor),
                 
                 createButton.heightAnchor.constraint(equalToConstant: 60),
-                createButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+                createButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
                 createButton.bottomAnchor.constraint(equalTo: cancelButton.bottomAnchor),
                 
                 errorLabel.centerXAnchor.constraint(equalTo: trackerNameTextField.centerXAnchor),
-                errorLabel.topAnchor.constraint(equalTo: trackerNameTextField.bottomAnchor, constant: 8)
+                errorLabel.topAnchor.constraint(equalTo: trackerNameTextField.bottomAnchor, constant: 8),
+                
+                emojiCollection.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 32),
+                emojiCollection.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 18),
+                emojiCollection.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -19),
+                emojiCollection.heightAnchor.constraint(equalToConstant: 204),
+                emojiCollection.bottomAnchor.constraint(equalTo: colorCollection.topAnchor, constant: -40),
+
+                colorCollection.topAnchor.constraint(equalTo: emojiCollection.bottomAnchor, constant: 14),
+                colorCollection.leadingAnchor.constraint(equalTo: emojiCollection.leadingAnchor),
+                colorCollection.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -19),
+                colorCollection.heightAnchor.constraint(equalToConstant: 220),
+                colorCollection.bottomAnchor.constraint(equalTo: cancelButton.topAnchor, constant: -40)
             ])
         }
     }
