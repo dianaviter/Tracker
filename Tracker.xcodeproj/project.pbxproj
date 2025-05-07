@@ -14,6 +14,7 @@
 		121FDFAB2DBBAB2300FD23CE /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121FDFA22DB68DF000FD23CE /* CoreDataStack.swift */; };
 		121FDFAD2DBBAD4500FD23CE /* UIColorMarshalling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121FDFAC2DBBAD4400FD23CE /* UIColorMarshalling.swift */; };
 		121FDFAF2DBBB04500FD23CE /* ScheduleMarshalling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121FDFAE2DBBB03F00FD23CE /* ScheduleMarshalling.swift */; };
+		1226E5872DCBF70B008120B7 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126318782DCBE91900E88474 /* OnboardingViewController.swift */; };
 		1240D0BB2DADB0C4001A10A9 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1240D0BA2DADB0C1001A10A9 /* Tracker.swift */; };
 		1240D0BF2DADB110001A10A9 /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1240D0BE2DADB10F001A10A9 /* TrackerCategory.swift */; };
 		1240D0C12DADB136001A10A9 /* TrackerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1240D0C02DADB135001A10A9 /* TrackerRecord.swift */; };
@@ -77,6 +78,7 @@
 		1240D0CE2DAEF5B6001A10A9 /* TrackerColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerColorCell.swift; sourceTree = "<group>"; };
 		1240D0D02DAEF678001A10A9 /* TrackerColorHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerColorHeader.swift; sourceTree = "<group>"; };
 		1240D0D22DAEF69C001A10A9 /* TrackerColorCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerColorCollectionView.swift; sourceTree = "<group>"; };
+		126318782DCBE91900E88474 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		126EBD2F2D9ED49B002C8133 /* TrackerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCell.swift; sourceTree = "<group>"; };
 		126EBD332DA03FF8002C8133 /* TrackerSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerSectionHeader.swift; sourceTree = "<group>"; };
 		12A5F0BC2DA31E370062C399 /* CreateTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerViewController.swift; sourceTree = "<group>"; };
@@ -168,6 +170,15 @@
 			path = TrackerColorCollection;
 			sourceTree = "<group>";
 		};
+		126318792DCBE93800E88474 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				121FDFAE2DBBB03F00FD23CE /* ScheduleMarshalling.swift */,
+				121FDFAC2DBBAD4400FD23CE /* UIColorMarshalling.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		12A5F0C62DAA8ADE0062C399 /* TrackersMainScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -223,17 +234,17 @@
 		12DBCF382D95F050005E6202 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
-				121FDFAE2DBBB03F00FD23CE /* ScheduleMarshalling.swift */,
-				121FDFAC2DBBAD4400FD23CE /* UIColorMarshalling.swift */,
 				12DBCF392D95F050005E6202 /* AppDelegate.swift */,
 				12DBCF3B2D95F050005E6202 /* SceneDelegate.swift */,
 				12DBCF3D2D95F050005E6202 /* ViewController.swift */,
 				12DBCF702D95FC6C005E6202 /* TabBarController.swift */,
+				126318782DCBE91900E88474 /* OnboardingViewController.swift */,
 				121FDFA12DB68DE900FD23CE /* CoreData */,
 				1240D0B92DADB0B5001A10A9 /* Models */,
 				12A5F0C62DAA8ADE0062C399 /* TrackersMainScreen */,
 				12A5F0C72DAA8B010062C399 /* CreateTracker */,
 				12A5F0C82DAA8B260062C399 /* StatisticsScreen */,
+				126318792DCBE93800E88474 /* Helpers */,
 				12DBCF422D95F051005E6202 /* Assets.xcassets */,
 				12DBCF442D95F051005E6202 /* LaunchScreen.storyboard */,
 				12DBCF472D95F051005E6202 /* Info.plist */,
@@ -395,6 +406,7 @@
 				121FDFAB2DBBAB2300FD23CE /* CoreDataStack.swift in Sources */,
 				1240D0C12DADB136001A10A9 /* TrackerRecord.swift in Sources */,
 				1240D0D32DAEF6A5001A10A9 /* TrackerColorCollectionView.swift in Sources */,
+				1226E5872DCBF70B008120B7 /* OnboardingViewController.swift in Sources */,
 				121FDFA82DB6AB2D00FD23CE /* TrackerRecordStore.swift in Sources */,
 				1240D0BF2DADB110001A10A9 /* TrackerCategory.swift in Sources */,
 				1240D0BB2DADB0C4001A10A9 /* Tracker.swift in Sources */,
