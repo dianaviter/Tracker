@@ -2,6 +2,11 @@ import UIKit
 
 final class OnboardingViewController: UIPageViewController {
     
+    // MARK: - Properties
+    
+    var onFinish: (() -> Void)?
+    
+    
     // MARK: - UI Elements
     
     private lazy var onboardingPages: [UIViewController] = {
@@ -45,7 +50,16 @@ final class OnboardingViewController: UIPageViewController {
         return image
     }()
     
+    
     // MARK: - Lifecycle
+    
+    init() {
+        super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +67,7 @@ final class OnboardingViewController: UIPageViewController {
         delegate = self
         
         if let first = onboardingPages.first {
-            setViewControllers([first], direction: .forward, animated: true)
+            setViewControllers([first], direction: .forward, animated: false)
         }
         
         onboardingButton.addTarget(self, action: #selector(onboardingButtonTapped(_:)), for: .touchUpInside)
@@ -64,8 +78,7 @@ final class OnboardingViewController: UIPageViewController {
     // MARK: - Actions
     
     @objc private func onboardingButtonTapped(_ sender: UIButton) {
-        navigationController?.pushViewController(TabBarController(), animated: true)
-        navigationController?.setNavigationBarHidden(true, animated: false)
+        onFinish?()
     }
     
     // MARK: - Layout
@@ -130,13 +143,13 @@ extension OnboardingViewController: UIPageViewControllerDataSource {
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        guard let currentIndex = viewControllers?.firstIndex(of: viewController) else { return nil }
+        guard let currentIndex = onboardingPages.firstIndex(of: viewController) else { return nil }
         let nextIndex = currentIndex + 1
-        
+
         guard nextIndex < onboardingPages.count else {
             return nil
         }
-        
+
         return onboardingPages[nextIndex]
     }
 }

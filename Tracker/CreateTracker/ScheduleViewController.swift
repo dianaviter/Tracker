@@ -92,7 +92,7 @@ final class ScheduleViewController: UIViewController {
         if sender.isOn {
             selectedWeekDays.insert(day)
         } else {
-            selectedWeekDays.removeAll()
+            selectedWeekDays.remove(day)
         }
     }
     

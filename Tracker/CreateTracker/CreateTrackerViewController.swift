@@ -9,7 +9,8 @@ import UIKit
 
 final class CreateTrackerViewController: UIViewController {
     
-    var onTrackerCreated: ((Tracker) -> Void)?
+    var onTrackerCreated: ((Tracker, TrackerCategory) -> Void)?
+    var trackerCategoryStore: TrackerCategoryStore?
     
     let habitButton: UIButton = {
         let button = UIButton()
@@ -51,8 +52,8 @@ final class CreateTrackerViewController: UIViewController {
     
     @objc func createHabitButtonTapped(_ sender: UIButton) {
         let habitVC = CreateNewHabitViewController()
-        habitVC.onCreateTracker = { [weak self] tracker in
-            self?.onTrackerCreated?(tracker)
+        habitVC.onCreateTracker = { [weak self] tracker, category in
+            self?.onTrackerCreated?(tracker, category)
             self?.presentingViewController?.dismiss(animated: true)
         }
         present(habitVC, animated: true)
@@ -60,8 +61,8 @@ final class CreateTrackerViewController: UIViewController {
     
     @objc func createIrregularEventButtonTapped(_ sender: UIButton) {
         let irregularEventVC = CreateIrregularEventViewController()
-        irregularEventVC.onCreateTracker = { [weak self] tracker in
-            self?.onTrackerCreated?(tracker)
+        irregularEventVC.onCreateTracker = { [weak self] tracker, category in
+            self?.onTrackerCreated?(tracker, category)
             self?.presentingViewController?.dismiss(animated: true)
         }
         present(irregularEventVC, animated: true)
