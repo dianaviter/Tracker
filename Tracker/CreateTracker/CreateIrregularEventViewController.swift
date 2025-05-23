@@ -13,7 +13,7 @@ final class CreateIrregularEventViewController: UIViewController {
     
     let tableOptions: [String] = ["Категория"]
     var defaultCategory = TrackerCategory(header: "Все трекеры", trackers: [])
-    var onCreateTracker: ((Tracker) -> Void)?
+    var onCreateTracker: ((Tracker, TrackerCategory) -> Void)?
     private var tableViewTopConstraint: NSLayoutConstraint?
     let emojiCollection = EmojiCollectionView()
     var selectedEmoji = ""
@@ -21,6 +21,7 @@ final class CreateIrregularEventViewController: UIViewController {
     var selectedColor = UIColor()
     private var isEmojiSelected = false
     private var isColorSelected = false
+    private var selectedCategory: TrackerCategory?
     
     // MARK: - UI Elements
     
@@ -144,6 +145,7 @@ final class CreateIrregularEventViewController: UIViewController {
     }
     
     @objc func createButtonTapped(_ sender: UIButton) {
+        let category = selectedCategory ?? defaultCategory
         let newTracker = Tracker(
             id: UUID(),
             name: trackerNameTextField.text,
@@ -151,7 +153,7 @@ final class CreateIrregularEventViewController: UIViewController {
             emoji: selectedEmoji,
             schedule: nil
         )
-        onCreateTracker?(newTracker)
+        onCreateTracker?(newTracker, category)
         dismiss(animated: true)
     }
     
@@ -193,7 +195,7 @@ final class CreateIrregularEventViewController: UIViewController {
     private func updateCategory() {
         let indexPath = IndexPath(row: 0, section: 0)
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
-        cell.detailTextLabel?.text = defaultCategory.header
+        cell.detailTextLabel?.text = selectedCategory?.header ?? defaultCategory.header
         activateCreateButton()
     }
     
@@ -297,7 +299,7 @@ extension CreateIrregularEventViewController: UITableViewDataSource {
         cell.detailTextLabel?.textColor = .trackerGray
         
         if indexPath.row == 0 {
-            cell.detailTextLabel?.text = defaultCategory.header
+            cell.detailTextLabel?.text = selectedCategory?.header
         }
         
         if indexPath.row == tableOptions.count - 1 {
@@ -312,9 +314,20 @@ extension CreateIrregularEventViewController: UITableViewDataSource {
 extension CreateIrregularEventViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let vcCategory = CategoryViewController()
         
         if indexPath.row == 0 {
+            guard let store = try? TrackerCategoryStore(context: coreDataStack.context) else { return }
+
+            let viewModel = CategoryViewModel(store: store)
+            let vcCategory = CategoryViewController(viewModel: viewModel, selectedCategory: self.selectedCategory)
+            
+            vcCategory.onCategorySelected = { [weak self] selected in
+                self?.selectedCategory = selected
+                self?.updateCategory()
+                self?.activateCreateButton()
+                self?.tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            }
+            
             present(vcCategory, animated: true)
         }
     }
