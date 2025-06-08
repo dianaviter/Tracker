@@ -72,7 +72,7 @@ extension EmojiCollectionView: UICollectionViewDelegate {
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? EmojiSectionHeader else {
             fatalError("Could not dequeue EmojiSectionHeader")
         }
-        header.headerLabel.text = "Emoji"
+        header.headerLabel.text = NSLocalizedString("emoji.headerLabel", comment: "")
         
         return header
     }

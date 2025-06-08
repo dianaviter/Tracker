@@ -72,7 +72,7 @@ extension TrackerColorCollectionView: UICollectionViewDelegate {
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? TrackerColorHeader else {
             fatalError("Could not dequeue EmojiSectionHeader")
         }
-        header.headerLabel.text = "Цвет"
+        header.headerLabel.text = NSLocalizedString("color.headerLabel", comment: "")
         
         return header
     }

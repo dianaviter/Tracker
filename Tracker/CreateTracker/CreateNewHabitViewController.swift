@@ -11,10 +11,10 @@ final class CreateNewHabitViewController: UIViewController {
     
     // MARK: - Properties
     
-    let tableOptions: [String] = ["Категория", "Расписание"]
+    let tableOptions: [String] = [NSLocalizedString("createhabit.category.title", comment: ""), NSLocalizedString("createhabit.schedule.title", comment: "")]
     let cellIdentifier = "cell"
     private var selectedDaysInScheduleViewController: [WeekDay] = []
-    var defaultCategory = TrackerCategory(header: "Все трекеры", trackers: [])
+    var defaultCategory = TrackerCategory(header: NSLocalizedString("createhabit.default.category", comment: ""), trackers: [])
     var onCreateTracker: ((Tracker, TrackerCategory) -> Void)?
     private var tableViewTopConstraint: NSLayoutConstraint?
     let emojiCollection = EmojiCollectionView()
@@ -45,7 +45,7 @@ final class CreateNewHabitViewController: UIViewController {
     
     private let textLabel: UILabel = {
         let label = UILabel()
-        label.text = "Новая привычка"
+        label.text = NSLocalizedString("createhabit.title", comment: "")
         label.textColor = .trackerBlack
         label.font = .systemFont(ofSize: 16, weight: .medium)
         label.textAlignment = .center
@@ -54,7 +54,7 @@ final class CreateNewHabitViewController: UIViewController {
     
     private let trackerNameTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Введите название трекера"
+        textField.placeholder = NSLocalizedString("createhabit.trackername.placeholder", comment: "")
         textField.font = .systemFont(ofSize: 17, weight: .regular)
         textField.layer.cornerRadius = 16
         textField.clipsToBounds = true
@@ -66,7 +66,7 @@ final class CreateNewHabitViewController: UIViewController {
     
     private let cancelButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Отменить", for: .normal)
+        button.setTitle(NSLocalizedString("createhabit.cancel.button", comment: ""), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 17, weight: .medium)
         button.setTitleColor(.trackerRed, for: .normal)
         button.layer.borderWidth = 1
@@ -78,7 +78,7 @@ final class CreateNewHabitViewController: UIViewController {
     
     private let createButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Создать", for: .normal)
+        button.setTitle(NSLocalizedString("createhabit.create.button", comment: ""), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         button.titleLabel?.textColor = .white
         button.backgroundColor = .trackerGray
@@ -99,7 +99,7 @@ final class CreateNewHabitViewController: UIViewController {
     
     private let errorLabel: UILabel = {
         let label = UILabel()
-        label.text = "Ограничение 38 символов"
+        label.text = NSLocalizedString("createhabit.characterlimit.error", comment: "")
         label.font = .systemFont(ofSize: 17, weight: .regular)
         label.textColor = .trackerRed
         label.isHidden = true
@@ -226,7 +226,6 @@ final class CreateNewHabitViewController: UIViewController {
     private func updateCategory() {
         let indexPath = IndexPath(row: 0, section: 0)
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
-        print ("Selected category: \(selectedCategory?.header ?? "")")
         cell.detailTextLabel?.text = selectedCategory?.header ?? defaultCategory.header
         activateCreateButton()
     }
@@ -336,7 +335,7 @@ extension CreateNewHabitViewController: UITableViewDataSource {
                 $0.shortName
             }
             if WeekDay.allCases.count == sortedDays.count {
-                cell.detailTextLabel?.text = "Каждый день"
+                cell.detailTextLabel?.text = NSLocalizedString("scheduleview.everyday", comment: "")
             } else {
                 cell.detailTextLabel?.text = dayNames.joined(separator: ", ")
             }

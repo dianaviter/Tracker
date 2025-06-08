@@ -1,0 +1,54 @@
+"createhabit.title" = "New Habit";
+"createhabit.trackername.placeholder" = "Enter tracker name";
+"createhabit.cancel.button" = "Cancel";
+"createhabit.create.button" = "Create";
+"createhabit.characterlimit.error" = "Limit of 38 characters";
+"createhabit.category.title" = "Category";
+"createhabit.schedule.title" = "Schedule";
+"createhabit.everyday" = "Every day";
+"createhabit.default.category" = "All trackers";
+"createirregularevent.title" = "New irregular event";
+
+"categoryview.addcategory.button" = "Add Category";
+"categoryview.title" = "Category";
+
+"createcategory.title" = "New Category";
+"createcategory.name.placeholder" = "Enter category name";
+"createcategory.done.button" = "Done";
+"createcategory.save.error" = "Error saving category";
+
+"scheduleview.title" = "Schedule";
+"scheduleview.done.button" = "Done";
+"scheduleview.everyday" = "Every day";
+
+"weekday.full.monday" = "Monday";
+"weekday.full.tuesday" = "Tuesday";
+"weekday.full.wednesday" = "Wednesday";
+"weekday.full.thursday" = "Thursday";
+"weekday.full.friday" = "Friday";
+"weekday.full.saturday" = "Saturday";
+"weekday.full.sunday" = "Sunday";
+
+"weekday.short.monday" = "Mo";
+"weekday.short.tuesday" = "Tu";
+"weekday.short.wednesday" = "We";
+"weekday.short.thursday" = "Th";
+"weekday.short.friday" = "Fr";
+"weekday.short.saturday" = "Sa";
+"weekday.short.sunday" = "Su";
+
+"onboarding.button.title" = "Now that's technology!";
+"onboarding.page1.text" = "Track only what you want";
+"onboarding.page2.text" = "Even if it's not liters of water and yoga";
+
+"trackerview.title" = "Trackers";
+"trackerview.placeholder.text" = "What do you want to track?";
+"trackerview.search.placeholder" = "Search";
+"tabbar.statistics.title" = "Statistics";
+
+"createtracker.title" = "Create Tracker";
+"create.tracker.habit.button" = "Habit";
+"create.tracker.irregularevent.button" = "Irregular Event";
+
+"color.headerLabel" = "Color";
+"emoji.headerLabel" = "Emoji";

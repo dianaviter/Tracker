@@ -17,7 +17,7 @@ final class OnboardingViewController: UIPageViewController {
     
     private let onboardingButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Вот это технологии!", for: .normal)
+        button.setTitle(NSLocalizedString("onboarding.button.title", comment: ""), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         button.titleLabel?.textColor = .trackerWhite
         button.layer.cornerRadius = 16
@@ -120,10 +120,10 @@ final class OnboardingViewController: UIPageViewController {
               let index = onboardingPages.firstIndex(of: currentVC) else { return }
         
         if index == 0 {
-            textLabel.text = "Отслеживайте только то, что хотите"
+            textLabel.text = NSLocalizedString("onboarding.page1.text", comment: "")
             backgroundImage.image = UIImage(named: "Onboarding1")
         } else {
-            textLabel.text = "Даже если это не литры воды и йога"
+            textLabel.text = NSLocalizedString("onboarding.page2.text", comment: "")
             backgroundImage.image = UIImage(named: "Onboarding2")
         }
     }

@@ -41,7 +41,7 @@ final class TrackerViewController: UIViewController {
     
     private let imageTextLabel: UILabel = {
         let textLabel = UILabel()
-        textLabel.text = "Что будем отслеживать?"
+        textLabel.text = NSLocalizedString("trackerview.placeholder.text", comment: "")
         textLabel.font = .systemFont(ofSize: 12, weight: .medium)
         textLabel.textColor = .trackerBlack
         return textLabel
@@ -49,7 +49,7 @@ final class TrackerViewController: UIViewController {
     
     private let trackerLabel: UILabel = {
         let textLabel = UILabel()
-        textLabel.text = "Трекеры"
+        textLabel.text = NSLocalizedString("trackerview.title", comment: "")
         textLabel.font = .systemFont(ofSize: 34, weight: .bold)
         textLabel.textColor = .trackerBlack
         return textLabel
@@ -63,7 +63,7 @@ final class TrackerViewController: UIViewController {
     
     private let searchButton: UISearchTextField = {
         let searchbar = UISearchTextField()
-        searchbar.placeholder = "Поиск"
+        searchbar.placeholder = NSLocalizedString("trackerview.search.placeholder", comment: "")
         searchbar.backgroundColor = .white
         return searchbar
     }()
@@ -100,15 +100,14 @@ final class TrackerViewController: UIViewController {
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
         let selectedDate = sender.date
         
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ru_RU")
-        formatter.dateFormat = "EEEE"
-        let selectedDay = formatter.string(from: selectedDate).capitalized
+        let selectedWeekdayIndex = Calendar.current.component(.weekday, from: selectedDate)
+        let weekDaysOrdered: [WeekDay] = [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]
+        let selectedWeekday = weekDaysOrdered[selectedWeekdayIndex - 1]
         
         filteredCategories = categories.map { category in
             let filteredTrackers = category.trackers.filter { tracker in
                 if let schedule = tracker.schedule, !schedule.isEmpty {
-                    return schedule.contains { $0.rawValue == selectedDay }
+                    return schedule.contains { $0 == selectedWeekday }
                 } else {
                     let wasMarked = completedTrackers.contains {
                         $0.id == tracker.id
@@ -188,7 +187,7 @@ final class TrackerViewController: UIViewController {
             datePickerValueChanged(datePicker)
 
         } catch {
-            print("❌ Ошибка при добавлении трекера: \(error)")
+            print("Ошибка при добавлении трекера: \(error)")
         }
     }
     

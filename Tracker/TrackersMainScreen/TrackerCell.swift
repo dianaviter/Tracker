@@ -75,16 +75,11 @@ final class TrackerCell: UICollectionViewCell {
         cellEmoji.text = tracker.emoji ?? "🙂"
         cellBackground.backgroundColor = tracker.color
         
-        let remainder10 = daysCount % 10
-        let remainder100 = daysCount % 100
-        
-        if remainder10 == 1 && !(11...19).contains(remainder100) {
-            cellDays.text = ("\(daysCount) день")
-        } else if (2...4).contains(remainder10) && !(11...19).contains(remainder100) {
-            cellDays.text = ("\(daysCount) дня")
-        } else {
-            cellDays.text = ("\(daysCount) дней")
-        }
+        let localizedDays = String.localizedStringWithFormat(
+            NSLocalizedString("tracker.days.count", comment: ""),
+            daysCount
+        )
+        cellDays.text = localizedDays
         
         if isCompleted {
             cellButton.backgroundColor = tracker.color?.withAlphaComponent(0.8)

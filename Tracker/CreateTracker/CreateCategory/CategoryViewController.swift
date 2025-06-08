@@ -40,7 +40,7 @@ final class CategoryViewController: UIViewController {
 
     private let createButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Добавить категорию", for: .normal)
+        button.setTitle(NSLocalizedString("categoryview.addcategory.button", comment: ""), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         button.titleLabel?.textColor = .white
         button.backgroundColor = .trackerBlack
@@ -51,7 +51,7 @@ final class CategoryViewController: UIViewController {
 
     private let textLabel: UILabel = {
         let label = UILabel()
-        label.text = "Категория"
+        label.text = NSLocalizedString("categoryview.title", comment: "")
         label.textColor = .trackerBlack
         label.font = .systemFont(ofSize: 16, weight: .medium)
         return label

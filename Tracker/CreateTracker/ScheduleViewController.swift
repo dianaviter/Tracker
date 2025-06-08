@@ -10,23 +10,20 @@ import UIKit
 // MARK: - Models
 
 enum WeekDay: String, CaseIterable, Codable {
-    case monday = "Понедельник"
-    case tuesday = "Вторник"
-    case wednesday = "Среда"
-    case thursday = "Четверг"
-    case friday = "Пятница"
-    case saturday = "Суббота"
-    case sunday = "Воскресенье"
+    case monday = "monday"
+    case tuesday = "tuesday"
+    case wednesday = "wednesday"
+    case thursday = "thursday"
+    case friday = "friday"
+    case saturday = "saturday"
+    case sunday = "sunday"
     
+    var fullName: String {
+        return NSLocalizedString("weekday.full.\(self.rawValue)", comment: "")
+    }
+
     var shortName: String {
-        let exception: [WeekDay: String] = [
-            .monday: "Пн",
-            .thursday: "Чт",
-            .friday: "Пт",
-            .saturday: "Сб",
-            .sunday: "Вс"
-        ]
-        return exception[self] ?? String(rawValue.prefix(2))
+        return NSLocalizedString("weekday.short.\(self.rawValue)", comment: "")
     }
 }
 
@@ -57,7 +54,7 @@ final class ScheduleViewController: UIViewController {
     
     private let textLabel: UILabel = {
         let label = UILabel()
-        label.text = "Расписание"
+        label.text = NSLocalizedString("scheduleview.title", comment: "")
         label.textColor = .trackerBlack
         label.font = .systemFont(ofSize: 16, weight: .medium)
         return label
@@ -65,7 +62,7 @@ final class ScheduleViewController: UIViewController {
     
     private let doneButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Готово", for: .normal)
+        button.setTitle(NSLocalizedString("scheduleview.done.button", comment: ""), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         button.titleLabel?.textColor = .white
         button.backgroundColor = .trackerBlack
@@ -138,7 +135,7 @@ extension ScheduleViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: cellIdentifier)
-        cell.textLabel?.text = WeekDay.allCases[indexPath.row].rawValue
+        cell.textLabel?.text = WeekDay.allCases[indexPath.row].fullName
         cell.textLabel?.font = .systemFont(ofSize: 17, weight: .regular)
         cell.textLabel?.textColor = .black
         cell.backgroundColor = .trackerBackground
