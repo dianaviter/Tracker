@@ -15,7 +15,7 @@ final class CreateNewHabitViewController: UIViewController {
     let cellIdentifier = "cell"
     private var selectedDaysInScheduleViewController: [WeekDay] = []
     var defaultCategory = TrackerCategory(header: "Все трекеры", trackers: [])
-    var onCreateTracker: ((Tracker) -> Void)?
+    var onCreateTracker: ((Tracker, TrackerCategory) -> Void)?
     private var tableViewTopConstraint: NSLayoutConstraint?
     let emojiCollection = EmojiCollectionView()
     var selectedEmoji = ""
@@ -23,6 +23,7 @@ final class CreateNewHabitViewController: UIViewController {
     var selectedColor = UIColor()
     private var isEmojiSelected = false
     private var isColorSelected = false
+    private var selectedCategory: TrackerCategory?
     
     // MARK: - UI Elements
     
@@ -147,6 +148,7 @@ final class CreateNewHabitViewController: UIViewController {
     }
     
     @objc func createButtonTapped(_ sender: UIButton) {
+        let category = selectedCategory ?? defaultCategory
         let newTracker = Tracker(
             id: UUID(),
             name: trackerNameTextField.text,
@@ -154,7 +156,7 @@ final class CreateNewHabitViewController: UIViewController {
             emoji: selectedEmoji,
             schedule: Set(selectedDaysInScheduleViewController)
         )
-        onCreateTracker?(newTracker)
+        onCreateTracker?(newTracker, category)
         dismiss(animated: true)
     }
     
@@ -214,9 +216,8 @@ final class CreateNewHabitViewController: UIViewController {
         if selectedDaysInScheduleViewController.isEmpty {
             cell.detailTextLabel?.text = nil
         } else {
-            let dayNames = sortedDays.map {
-                $0.shortName
-            }
+            let dayNames = sortedDays.map { $0.shortName }
+            cell.detailTextLabel?.text = dayNames.joined(separator: ", ")
         }
         tableView.reloadRows(at: [indexPath], with: .automatic)
         activateCreateButton()
@@ -225,7 +226,8 @@ final class CreateNewHabitViewController: UIViewController {
     private func updateCategory() {
         let indexPath = IndexPath(row: 0, section: 0)
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
-        cell.detailTextLabel?.text = defaultCategory.header
+        print ("Selected category: \(selectedCategory?.header ?? "")")
+        cell.detailTextLabel?.text = selectedCategory?.header ?? defaultCategory.header
         activateCreateButton()
     }
     
@@ -342,7 +344,7 @@ extension CreateNewHabitViewController: UITableViewDataSource {
         cell.detailTextLabel?.font = .systemFont(ofSize: 17, weight: .regular)
         cell.detailTextLabel?.textColor = .trackerGray
         if indexPath.row == 0 {
-            cell.detailTextLabel?.text = defaultCategory.header
+            cell.detailTextLabel?.text = selectedCategory?.header
         }
         
         if indexPath.row == tableOptions.count - 1 {
@@ -358,18 +360,31 @@ extension CreateNewHabitViewController: UITableViewDataSource {
 extension CreateNewHabitViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let vcCategory = CategoryViewController()
-        let vcSchedule = ScheduleViewController()
-        
+
         if indexPath.row == 0 {
+            guard let store = try? TrackerCategoryStore(context: coreDataStack.context) else { return }
+
+            let viewModel = CategoryViewModel(store: store)
+            viewModel.fetchCategories()
+            
+            let vcCategory = CategoryViewController(viewModel: viewModel, selectedCategory: self.selectedCategory)
+            
+            vcCategory.onCategorySelected = { [weak self] selected in
+                self?.selectedCategory = selected
+                self?.updateCategory()
+                self?.activateCreateButton()
+                self?.tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            }
+
             present(vcCategory, animated: true)
         } else {
-            present(vcSchedule, animated: true)
-            vcSchedule.selectedWeekDays = Set(selectedDaysInScheduleViewController)
-            vcSchedule.daysSelected = { [weak self] selected in
-                self?.selectedDaysInScheduleViewController = selected
+            let scheduleVC = ScheduleViewController()
+            scheduleVC.selectedWeekDays = Set(self.selectedDaysInScheduleViewController)
+            scheduleVC.daysSelected = { [weak self] selectedDays in
+                self?.selectedDaysInScheduleViewController = selectedDays
                 self?.updateScheduleLabel()
             }
+            present(scheduleVC, animated: true)
         }
     }
 }

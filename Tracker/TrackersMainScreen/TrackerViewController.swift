@@ -28,6 +28,7 @@ final class TrackerViewController: UIViewController {
     private var trackerStore: TrackerStore?
     private var coreDataStack = CoreDataStack()
     private var trackerRecordStore: TrackerRecordStore?
+    private var trackerCategoryStore: TrackerCategoryStore?
     
     // MARK: - UI Elements
     
@@ -130,8 +131,8 @@ final class TrackerViewController: UIViewController {
     
     @objc func addButtonCLicked(_ sender: CreateTrackerViewController) {
         let vc = CreateTrackerViewController()
-        vc.onTrackerCreated = { [weak self] tracker in
-            self?.addNewTracker(tracker)
+        vc.onTrackerCreated = { [weak self] tracker, category in
+            self?.addNewTracker(tracker, to: category)
             self?.collectionView.reloadData()
         }
         present(vc, animated: true)
@@ -145,10 +146,11 @@ final class TrackerViewController: UIViewController {
         do {
             trackerStore = try TrackerStore(context: context)
             trackerRecordStore = try TrackerRecordStore(context: context)
+            trackerCategoryStore = try TrackerCategoryStore(context: context)
             trackerStore?.delegate = self
-            if let trackers = try? trackerStore?.trackers() {
-                categories = [TrackerCategory(header: "Все трекеры", trackers: trackers)]
-            }
+
+            categories = trackerCategoryStore?.trackerCategories() ?? []
+            
             if let records = try? trackerRecordStore?.trackerRecords() {
                 completedTrackers = records
             }
@@ -168,19 +170,26 @@ final class TrackerViewController: UIViewController {
         collectionView.reloadData()
     }
     
-    func addNewTracker(_ tracker: Tracker) {
-        try? trackerStore?.addTracker(tracker)
-        
-        if let index = categories.firstIndex(where: { $0.header == "Все категории" }) {
-            let oldCategory = categories[index]
-            let updatedTrackers = oldCategory.trackers + [tracker]
-            let newCategory = TrackerCategory(header: oldCategory.header, trackers: updatedTrackers)
-            categories[index] = newCategory
-        } else {
-            let newCategory = TrackerCategory(header: "Все категории", trackers: [tracker])
-            categories.append(newCategory)
+    func addNewTracker(_ tracker: Tracker, to category: TrackerCategory) {
+        do {
+            let currentCategories = trackerCategoryStore?.trackerCategories() ?? []
+
+            if let index = currentCategories.firstIndex(where: { $0.header == category.header }) {
+                let existingCategory = currentCategories[index]
+                let updatedTrackers = existingCategory.trackers + [tracker]
+                let updatedCategory = TrackerCategory(header: existingCategory.header, trackers: updatedTrackers)
+                try trackerCategoryStore?.updateCategory(updatedCategory)
+            } else {
+                let newCategory = TrackerCategory(header: category.header, trackers: [tracker])
+                try trackerCategoryStore?.addTrackerCategory(newCategory)
+            }
+
+            categories = trackerCategoryStore?.trackerCategories() ?? []
+            datePickerValueChanged(datePicker)
+
+        } catch {
+            print("❌ Ошибка при добавлении трекера: \(error)")
         }
-        datePickerValueChanged(datePicker)
     }
     
     private func updateNumberOfDays(_ tracker: Tracker) {
@@ -318,14 +327,8 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
 
 extension TrackerViewController: TrackerStoreDelegate {
     func store(_ store: TrackerStore, didUpdate update: TrackerStoreUpdate) {
-        do {
-            let trackers = try store.trackers()
-            categories = [TrackerCategory(header: "Все категории", trackers: trackers)]
+            categories = trackerCategoryStore?.trackerCategories() ?? []
             datePickerValueChanged(datePicker)
-            
             collectionView.reloadData()
-        } catch {
-            print("Ошибка загрузки трекеров: \(error)")
-        }
     }
 }

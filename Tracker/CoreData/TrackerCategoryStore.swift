@@ -59,9 +59,9 @@ final class TrackerCategoryStore: NSObject {
         try self.fetchedResultsController.performFetch()
     }
     
-    func trackerCategories() throws -> [TrackerCategory] {
+    func trackerCategories() -> [TrackerCategory] {
         guard let objects = fetchedResultsController.fetchedObjects else { return [] }
-        return try objects.map { try trackerCategory(from: $0) }
+        return objects.compactMap { try? trackerCategory(from: $0) }
     }
 
     private func tracker(from coreData: TrackerCoreData) throws -> Tracker {
@@ -81,36 +81,103 @@ final class TrackerCategoryStore: NSObject {
         )
     }
     
-    private func trackerCategory(from coreData: TrackerCategoryCoreData) throws -> TrackerCategory {
-        guard let header = coreData.header else {
-            throw NSError()
+    func addTracker(_ tracker: Tracker, to categoryHeader: String) throws {
+        let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "header == %@", categoryHeader)
+
+        guard let categoryObject = try context.fetch(fetchRequest).first else {
+            throw NSError(domain: "Category not found", code: 1)
         }
- 
-        let trackerSet = coreData.trackers as? Set<TrackerCoreData> ?? []
-        let trackers = try trackerSet.map { try tracker(from: $0) }
+
+        let trackerObject = TrackerCoreData(context: context)
+        trackerObject.id = tracker.id
+        trackerObject.name = tracker.name
+        trackerObject.emoji = tracker.emoji
+        trackerObject.color = colorMarshalling.hexString(from: tracker.color ?? .black)
+        trackerObject.schedule = scheduleMarshalling.data(from: tracker.schedule ?? [])
+
+        trackerObject.category = categoryObject
+        categoryObject.addToTracker(trackerObject)
+
+        try context.save()
+    }
+    
+    func category(with header: String) throws -> TrackerCategory? {
+        let fetchRequest = TrackerCategoryCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "header == %@", header)
+        
+        let results = try context.fetch(fetchRequest)
+        guard let category = results.first else { return nil }
+        
+        return try trackerCategory(from: category)
+    }
+    
+    private func trackerCategory(from coreData: TrackerCategoryCoreData) throws -> TrackerCategory {
+        guard let header = coreData.header, !header.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            throw NSError(domain: "Empty header", code: 0)
+        }
+
+        let trackerSet = coreData.tracker as? Set<TrackerCoreData> ?? []
+        let trackers = trackerSet.compactMap { try? tracker(from: $0) }
 
         return TrackerCategory(
             header: header,
             trackers: trackers
         )
     }
-
     
     func addTrackerCategory(_ trackerCategory: TrackerCategory) throws {
-        let object = TrackerCategoryCoreData(context: context)
-        object.header = trackerCategory.header
-        
-        let trackerObjects = trackerCategory.trackers.map { tracker -> TrackerCoreData in
+        guard let header = trackerCategory.header?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !header.isEmpty else {
+            return
+        }
+
+            let categoryObject = TrackerCategoryCoreData(context: context)
+            categoryObject.header = header
+
+        for tracker in trackerCategory.trackers {
             let trackerObject = TrackerCoreData(context: context)
             trackerObject.id = tracker.id
             trackerObject.name = tracker.name
             trackerObject.color = colorMarshalling.hexString(from: tracker.color ?? .black)
             trackerObject.emoji = tracker.emoji
             trackerObject.schedule = scheduleMarshalling.data(from: tracker.schedule ?? [])
-            return trackerObject
+            
+            trackerObject.category = categoryObject
+            categoryObject.addToTracker(trackerObject)
         }
-        object.trackers = NSSet(array: trackerObjects)
-        
+        print("Context before save: \(context)")
+        try context.save()
+    }
+    
+    func updateCategory(_ category: TrackerCategory) throws {
+        let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "header == %@", category.header ?? "")
+
+        guard let categoryToUpdate = try context.fetch(fetchRequest).first else {
+            print("Warning: Category with header \(category.header ?? "") not found for update")
+            return
+        }
+
+        categoryToUpdate.header = category.header
+
+        let existingTrackers = categoryToUpdate.tracker as? Set<TrackerCoreData> ?? []
+        for tracker in existingTrackers {
+            context.delete(tracker)
+        }
+
+        for tracker in category.trackers {
+            let trackerObject = TrackerCoreData(context: context)
+            trackerObject.id = tracker.id
+            trackerObject.name = tracker.name
+            trackerObject.color = colorMarshalling.hexString(from: tracker.color ?? .black)
+            trackerObject.emoji = tracker.emoji
+            trackerObject.schedule = scheduleMarshalling.data(from: tracker.schedule ?? [])
+            
+            trackerObject.category = categoryToUpdate
+            categoryToUpdate.addToTracker(trackerObject)
+        }
+
         try context.save()
     }
 
