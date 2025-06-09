@@ -16,6 +16,7 @@ final class TrackerViewController: UIViewController {
     private var categories: [TrackerCategory] = []
     private var completedTrackers: [TrackerRecord] = []
     private var filteredCategories: [TrackerCategory] = []
+    private var visibleCategories: [TrackerCategory] = []
     private var numberOfDays = 0
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -84,6 +85,7 @@ final class TrackerViewController: UIViewController {
         setUpConstraints()
         datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
         addTracker.addTarget(self, action: #selector(addButtonCLicked(_:)), for: .touchUpInside)
+        searchButton.addTarget(self, action: #selector(searchTextChanged(_:)), for: .editingChanged)
         
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -96,6 +98,25 @@ final class TrackerViewController: UIViewController {
     }
     
     // MARK: - Actions
+    
+    @objc private func searchTextChanged(_ sender: UISearchTextField) {
+        let query = sender.text?.lowercased() ?? ""
+
+        if query.isEmpty {
+            visibleCategories = filteredCategories
+        } else {
+            visibleCategories = filteredCategories.map { category in
+                let filteredTrackers = category.trackers.filter {
+                    let name = $0.name ?? ""
+                    return name.lowercased().contains(query)
+                }
+                return TrackerCategory(header: category.header, trackers: filteredTrackers)
+            }.filter { !$0.trackers.isEmpty }
+        }
+
+        showContentOrPlaceholder()
+    }
+
     
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
         let selectedDate = sender.date
@@ -125,8 +146,14 @@ final class TrackerViewController: UIViewController {
             return TrackerCategory(header: category.header, trackers: filteredTrackers)
         }.filter { !$0.trackers.isEmpty }
         
-        showContentOrPlaceholder()
+        if let query = searchButton.text, !query.isEmpty {
+            searchTextChanged(searchButton)
+        } else {
+            visibleCategories = filteredCategories
+            showContentOrPlaceholder()
+        }
     }
+
     
     @objc func addButtonCLicked(_ sender: CreateTrackerViewController) {
         let vc = CreateTrackerViewController()
@@ -160,8 +187,7 @@ final class TrackerViewController: UIViewController {
     }
     
     private func showContentOrPlaceholder() {
-        let hasTrackers = filteredCategories.contains { !$0.trackers.isEmpty
-        }
+        let hasTrackers = visibleCategories.contains { !$0.trackers.isEmpty }
         collectionView.isHidden = !hasTrackers
         firstTrackerImageView.isHidden = hasTrackers
         imageTextLabel.isHidden = hasTrackers
@@ -257,16 +283,16 @@ final class TrackerViewController: UIViewController {
 
 extension TrackerViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return filteredCategories.count
+        return visibleCategories.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return filteredCategories[section].trackers.count
+        return visibleCategories[section].trackers.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerCell.cellIdentifier, for: indexPath) as? TrackerCell
-        let tracker = filteredCategories[indexPath.section].trackers[indexPath.item]
+        let tracker = visibleCategories[indexPath.section].trackers[indexPath.item]
         let isCompleted = completedTrackers.contains { $0.id == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: datePicker.date) }
         let daysCount = completedTrackers.filter { $0.id == tracker.id }.count
         
@@ -292,7 +318,7 @@ extension TrackerViewController: UICollectionViewDataSource {
                 fatalError("Could not dequeue TrackerSectionHeader")
             }
 
-            header.headerLabel.text = filteredCategories[indexPath.section].header
+            header.headerLabel.text = visibleCategories[indexPath.section].header
             return header
     }
 }
