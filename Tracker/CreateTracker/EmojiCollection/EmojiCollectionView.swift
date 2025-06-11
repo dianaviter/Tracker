@@ -11,6 +11,12 @@ final class EmojiCollectionView: UIView {
     
     let emojiCollection = ["🙂", "😻", "🌺", "🐶", "❤️", "😱", "😇", "😡", "🥶", "🤔", "🙌", "🍔", "🥦", "🏓", "🥇", "🎸", "🏝️", "😪"]
     
+    var selectedEmoji: String? {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
+    
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -58,7 +64,17 @@ extension EmojiCollectionView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmojiCell.cellIdentifier, for: indexPath) as? EmojiCell
-        cell?.configure(with: emojiCollection[indexPath.row])
+        let emoji = emojiCollection[indexPath.row]
+        cell?.configure(with: emoji)
+        
+        if emoji == selectedEmoji {
+            cell?.backgroundColor = .trackerLightGray
+            cell?.clipsToBounds = true
+            cell?.layer.cornerRadius = 16
+        } else {
+            cell?.backgroundColor = .clear
+        }
+        
         return cell ?? UICollectionViewCell()
     }
 }
@@ -78,13 +94,9 @@ extension EmojiCollectionView: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath) as? EmojiCell
-        cell?.backgroundColor = .trackerLightGray
-        cell?.clipsToBounds = true
-        cell?.layer.cornerRadius = 16
-        
-        let selectedEmoji = emojiCollection[indexPath.row]
-        onEmojiSelected?(selectedEmoji)
+        let selected = emojiCollection[indexPath.row]
+        selectedEmoji = selected
+        onEmojiSelected?(selected)
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {

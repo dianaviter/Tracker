@@ -77,7 +77,8 @@ final class TrackerCategoryStore: NSObject {
             name: name,
             color: color,
             emoji: emoji,
-            schedule: schedule
+            schedule: schedule,
+            isPinned: coreData.isPinned
         )
     }
     

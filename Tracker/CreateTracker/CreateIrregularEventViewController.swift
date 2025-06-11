@@ -151,7 +151,8 @@ final class CreateIrregularEventViewController: UIViewController {
             name: trackerNameTextField.text,
             color: selectedColor,
             emoji: selectedEmoji,
-            schedule: nil
+            schedule: nil,
+            isPinned: false
         )
         onCreateTracker?(newTracker, category)
         dismiss(animated: true)

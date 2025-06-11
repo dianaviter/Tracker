@@ -99,6 +99,19 @@ final class TrackerRecordStore: NSObject {
         context.delete(record)
         try context.save()
     }
+    
+    func numberOfRecords(for trackerID: UUID) -> Int {
+        let fetchRequest: NSFetchRequest<TrackerRecordCoreData> = TrackerRecordCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", trackerID as CVarArg)
+
+        do {
+            let count = try context.count(for: fetchRequest)
+            return count
+        } catch {
+            print("Error counting records for tracker \(trackerID): \(error)")
+            return 0
+        }
+    }
 }
 
 extension TrackerRecordStore: NSFetchedResultsControllerDelegate {

@@ -52,3 +52,15 @@
 
 "color.headerLabel" = "Color";
 "emoji.headerLabel" = "Emoji";
+
+"context.menu.pin" = "Pin";
+"context.menu.unpin" = "Unpin";
+"context.menu.delete" = "Delete";
+"context.menu.edit" = "Edit";
+"pinned.category.title" = "Pinned";
+"createhabit.save.button" = "Save";
+"createhabit.edit.title" = "Edit habit";
+
+"delete.confirmation.message" = "Are you sure you want to delete tracker?";
+"delete.confirm" = "Delete";
+"delete.cancel" = "Cancel";

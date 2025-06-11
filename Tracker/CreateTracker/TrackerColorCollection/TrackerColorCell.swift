@@ -42,6 +42,8 @@ final class TrackerColorCell: UICollectionViewCell {
             cellBackground.backgroundColor = .white
         } else {
             cellBackground.layer.borderWidth = 0
+            cellBackground.layer.borderColor = nil
+            cellBackground.backgroundColor = .clear
         }
     }
     

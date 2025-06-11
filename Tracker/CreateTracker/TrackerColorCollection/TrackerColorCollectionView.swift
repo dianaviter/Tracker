@@ -9,7 +9,23 @@ import UIKit
 
 final class TrackerColorCollectionView: UIView {
     
-    let trackerColors: [UIColor] = [.trackerColor1, .trackerColor2, .trackerColor3, .trackerColor4, .trackerColor5, .trackerColor6, .trackerColor7, .trackerColor8, .trackerColor9, .trackerColor10, .trackerColor11, .trackerColor12, .trackerColor13, .trackerColor14, .trackerColor15, .trackerColor16, .trackerColor17, .trackerColor18]
+    let trackerColors: [UIColor] = [
+        .trackerColor1, .trackerColor2, .trackerColor3, .trackerColor4, .trackerColor5, .trackerColor6,
+        .trackerColor7, .trackerColor8, .trackerColor9, .trackerColor10, .trackerColor11, .trackerColor12,
+        .trackerColor13, .trackerColor14, .trackerColor15, .trackerColor16, .trackerColor17, .trackerColor18
+    ]
+    
+    var selectedColor: UIColor? {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
+    
+    var selectedColorHex: String? {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -19,6 +35,7 @@ final class TrackerColorCollectionView: UIView {
         collectionview.backgroundColor = .clear
         return collectionview
     }()
+    
     var onSelectedColor: ((UIColor) -> Void)?
     
     override init(frame: CGRect) {
@@ -58,7 +75,12 @@ extension TrackerColorCollectionView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerColorCell.cellIdentifier, for: indexPath) as? TrackerColorCell
-        cell?.configure(with: trackerColors[indexPath.row], isSelected: false)
+        let color = trackerColors[indexPath.row]
+        let colorHex = UIColorMarshalling().hexString(from: color)
+        let isSelected = (colorHex == selectedColorHex)
+
+        cell?.configure(with: color, isSelected: isSelected)
+        
         return cell ?? UICollectionViewCell()
     }
 }
@@ -70,7 +92,7 @@ extension TrackerColorCollectionView: UICollectionViewDelegate {
         }
 
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? TrackerColorHeader else {
-            fatalError("Could not dequeue EmojiSectionHeader")
+            fatalError("Could not dequeue TrackerColorHeader")
         }
         header.headerLabel.text = NSLocalizedString("color.headerLabel", comment: "")
         
@@ -78,19 +100,10 @@ extension TrackerColorCollectionView: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath) as? TrackerColorCell
-        let selectedColor = trackerColors[indexPath.row]
-        cell?.layer.cornerRadius = 8
-        
-        cell?.configure(with: selectedColor, isSelected: true)
-        onSelectedColor?(selectedColor)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath) as? TrackerColorCell
-        let selectedColor = trackerColors[indexPath.row]
-
-        cell?.configure(with: selectedColor, isSelected: false)
+        let selected = trackerColors[indexPath.row]
+        selectedColor = selected
+        selectedColorHex = UIColorMarshalling().hexString(from: selected)
+        onSelectedColor?(selected)
     }
 }
 
@@ -100,10 +113,10 @@ extension TrackerColorCollectionView: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let interСellSpace = 5
+        let interCellSpace = 5
         let leftSpace = 18
         let rightSpace = 19
-        let totalSpace = interСellSpace * 6 + leftSpace + rightSpace
+        let totalSpace = interCellSpace * 6 + leftSpace + rightSpace
         let width = (Int(collectionView.frame.width) - totalSpace)/6
         return CGSize(width: width, height: width)
     }

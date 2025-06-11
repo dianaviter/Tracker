@@ -52,3 +52,18 @@
 
 "color.headerLabel" = "Цвет";
 "emoji.headerLabel" = "Emoji";
+
+"context.menu.pin" = "Закрепить";
+"context.menu.unpin" = "Открепить";
+"context.menu.delete" = "Удалить";
+"context.menu.edit" = "Редактировать";
+"pinned.category.title" = "Закрепленные";
+"createhabit.save.button" = "Сохранить";
+"createhabit.edit.title" = "Редактирование привычки";
+
+"delete.confirmation.message" = "Уверены что хотите удалить трекер?";
+"delete.confirm" = "Удалить";
+"delete.cancel" = "Отменить";
+
+
+
