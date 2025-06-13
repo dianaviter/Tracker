@@ -65,5 +65,7 @@
 "delete.confirm" = "Удалить";
 "delete.cancel" = "Отменить";
 
+"categoryview.placeholder.text" = "Привычки и события можно объединять по смыслу";
+
 
 

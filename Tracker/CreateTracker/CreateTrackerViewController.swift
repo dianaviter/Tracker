@@ -19,7 +19,7 @@ final class CreateTrackerViewController: UIViewController {
         button.clipsToBounds = true
         button.setTitle(NSLocalizedString("create.tracker.habit.button", comment: ""), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.titleLabel?.textColor = .white
+        button.setTitleColor(.trackerWhite, for: .normal)
         return button
     }()
     
@@ -30,7 +30,7 @@ final class CreateTrackerViewController: UIViewController {
         button.clipsToBounds = true
         button.setTitle(NSLocalizedString("create.tracker.irregularevent.button", comment: ""), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.titleLabel?.textColor = .white
+        button.setTitleColor(.trackerWhite, for: .normal)
         return button
     }()
     
@@ -45,7 +45,7 @@ final class CreateTrackerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpConstraints()
-        view.backgroundColor = .white
+        view.backgroundColor = .trackerWhite
         habitButton.addTarget(self, action: #selector(createHabitButtonTapped(_:)), for: .touchUpInside)
         irregularEventButton.addTarget(self, action: #selector(createIrregularEventButtonTapped(_:)), for: .touchUpInside)
     }

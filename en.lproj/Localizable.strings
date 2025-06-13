@@ -64,3 +64,5 @@
 "delete.confirmation.message" = "Are you sure you want to delete tracker?";
 "delete.confirm" = "Delete";
 "delete.cancel" = "Cancel";
+
+"categoryview.placeholder.text" = "Habits and events can be combined by meaning";

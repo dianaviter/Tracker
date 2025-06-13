@@ -80,6 +80,7 @@ final class TrackerCell: UICollectionViewCell {
     
     func configure(tracker: Tracker, isCompleted: Bool, daysCount: Int) {
         cellTextLabel.text = tracker.name
+        cellTextLabel.textColor = .white
         cellEmoji.text = tracker.emoji ?? "🙂"
         cellBackground.backgroundColor = tracker.color
         

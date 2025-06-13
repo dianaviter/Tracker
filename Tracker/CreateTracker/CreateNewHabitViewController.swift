@@ -49,6 +49,7 @@ final class CreateNewHabitViewController: UIViewController {
         tableView.layer.cornerRadius = 16
         tableView.clipsToBounds = true
         tableView.separatorStyle = .singleLine
+        tableView.separatorColor = .gray
         tableView.rowHeight = 75
         return tableView
     }()
@@ -64,8 +65,13 @@ final class CreateNewHabitViewController: UIViewController {
     
     private let trackerNameTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = NSLocalizedString("createhabit.trackername.placeholder", comment: "")
-        textField.font = .systemFont(ofSize: 17, weight: .regular)
+        textField.attributedPlaceholder = NSAttributedString(
+            string: NSLocalizedString("createhabit.trackername.placeholder", comment: ""),
+            attributes: [
+                .foregroundColor: UIColor.lightGray,
+                .font: UIFont.systemFont(ofSize: 17, weight: .regular)
+            ]
+        )
         textField.layer.cornerRadius = 16
         textField.clipsToBounds = true
         textField.backgroundColor = .trackerBackground
@@ -90,8 +96,8 @@ final class CreateNewHabitViewController: UIViewController {
         let button = UIButton()
         button.setTitle(NSLocalizedString("createhabit.create.button", comment: ""), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.titleLabel?.textColor = .white
-        button.backgroundColor = .trackerGray
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .trackerBlack
         button.layer.cornerRadius = 16
         button.clipsToBounds = true
         return button
@@ -130,7 +136,7 @@ final class CreateNewHabitViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .trackerWhite
         setUpConstraints()
         tableView.dataSource = self
         tableView.delegate = self
@@ -161,6 +167,7 @@ final class CreateNewHabitViewController: UIViewController {
         clearButton.addTarget(self, action: #selector(clearButtonTapped), for: .touchUpInside)
         
         configureForEditing()
+        activateCreateButton()
     }
     
     // MARK: - Actions
@@ -258,18 +265,16 @@ final class CreateNewHabitViewController: UIViewController {
     }
     
     private func activateCreateButton() {
-        let firstLineTableView = tableView.cellForRow(at: IndexPath(row: 0, section: 0))
-        let secondLineTableView = tableView.cellForRow(at: IndexPath(row: 1, section: 0))
         let name = trackerNameTextField.text?.trimmingCharacters(in: .whitespaces) ?? ""
         
         if !name.isEmpty
-            && firstLineTableView?.detailTextLabel?.text != nil
-            && secondLineTableView?.detailTextLabel?.text != nil
-            && isEmojiSelected == true
-            && isColorSelected == true {
+            && selectedCategory != nil
+            && !selectedDaysInScheduleViewController.isEmpty
+            && isEmojiSelected
+            && isColorSelected {
             createButton.isEnabled = true
             createButton.backgroundColor = .trackerBlack
-            createButton.titleLabel?.textColor = .trackerWhite
+            createButton.setTitleColor(.trackerWhite, for: .normal)
         } else {
             createButton.isEnabled = false
             createButton.backgroundColor = .trackerGray
@@ -409,7 +414,7 @@ extension CreateNewHabitViewController: UITableViewDataSource {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
         cell.textLabel?.text = tableOptions[indexPath.row]
         cell.textLabel?.font = .systemFont(ofSize: 17, weight: .regular)
-        cell.textLabel?.textColor = .black
+        cell.textLabel?.textColor = .trackerBlack
         cell.backgroundColor = .trackerBackground
         cell.accessoryType = .disclosureIndicator
         

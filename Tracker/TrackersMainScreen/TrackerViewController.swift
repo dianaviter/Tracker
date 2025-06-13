@@ -57,15 +57,27 @@ final class TrackerViewController: UIViewController {
     }()
     
     private let addTracker: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(named: "addTracker"), for: .normal)
+        let button = UIButton(type: .system)
+        let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .bold)
+        let plusImage = UIImage(systemName: "plus", withConfiguration: config)
+        button.setImage(plusImage, for: .normal)
+        button.tintColor = .trackerBlack
         return button
     }()
-    
+
     private let searchButton: UISearchTextField = {
         let searchbar = UISearchTextField()
-        searchbar.placeholder = NSLocalizedString("trackerview.search.placeholder", comment: "")
-        searchbar.backgroundColor = .white
+        let placeholderText = NSLocalizedString("trackerview.search.placeholder", comment: "")
+        searchbar.attributedPlaceholder = NSAttributedString(
+            string: placeholderText,
+            attributes: [
+                .foregroundColor: UIColor.trackerGray
+            ]
+        )
+        if let leftImageView = searchbar.leftView as? UIImageView {
+            leftImageView.tintColor = .trackerGray
+        }
+        searchbar.backgroundColor = .trackerWhite
         return searchbar
     }()
     
@@ -73,6 +85,10 @@ final class TrackerViewController: UIViewController {
         let picker = UIDatePicker()
         picker.datePickerMode = .date
         picker.preferredDatePickerStyle = .compact
+        picker.backgroundColor = .trackerLightGray
+        picker.layer.cornerRadius = 8
+        picker.clipsToBounds = true
+        picker.setValue(UIColor.black, forKey: "textColor")
         return picker
     }()
     
@@ -91,10 +107,17 @@ final class TrackerViewController: UIViewController {
         collectionView.delegate = self
         collectionView.register(TrackerCell.self, forCellWithReuseIdentifier: TrackerCell.cellIdentifier)
         collectionView.register(TrackerSectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+        collectionView.backgroundColor = .trackerWhite
         
         datePicker.date = currentDate
         
         initializeStores()
+        updateDatePickerStyle()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        updateDatePickerStyle()
     }
     
     // MARK: - Actions
@@ -133,6 +156,16 @@ final class TrackerViewController: UIViewController {
     
     // MARK: - Actions
     
+    private func updateDatePickerStyle() {
+        if traitCollection.userInterfaceStyle == .dark {
+            datePicker.overrideUserInterfaceStyle = .light
+            datePicker.backgroundColor = .white
+            datePicker.setValue(UIColor.black, forKey: "textColor")
+        } else {
+            datePicker.overrideUserInterfaceStyle = .light
+        }
+    }
+    
     private func initializeStores() {
         let context = coreDataStack.persistentContainer.viewContext
         
@@ -143,6 +176,7 @@ final class TrackerViewController: UIViewController {
             trackerStore?.delegate = self
             
             categories = trackerCategoryStore?.trackerCategories() ?? []
+            filteredCategories = categories 
             
             if let records = try? trackerRecordStore?.trackerRecords() {
                 completedTrackers = records
@@ -267,10 +301,10 @@ final class TrackerViewController: UIViewController {
             imageTextLabel.centerXAnchor.constraint(equalTo: firstTrackerImageView.centerXAnchor),
             imageTextLabel.topAnchor.constraint(equalTo: firstTrackerImageView.bottomAnchor, constant: 8),
             
-            addTracker.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 1),
-            addTracker.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 6),
+            addTracker.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 13),
+            addTracker.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
             
-            trackerLabel.topAnchor.constraint(equalTo: addTracker.bottomAnchor, constant: 1),
+            trackerLabel.topAnchor.constraint(equalTo: addTracker.bottomAnchor, constant: 13),
             trackerLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             
             searchButton.topAnchor.constraint(equalTo: trackerLabel.bottomAnchor, constant: 8),

@@ -37,6 +37,7 @@ final class CreateIrregularEventViewController: UIViewController {
         tableView.layer.cornerRadius = 16
         tableView.clipsToBounds = true
         tableView.separatorStyle = .singleLine
+        tableView.separatorColor = .gray
         tableView.rowHeight = 75
         return tableView
     }()
@@ -51,7 +52,13 @@ final class CreateIrregularEventViewController: UIViewController {
     
     private let trackerNameTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = NSLocalizedString("createhabit.trackername.placeholder", comment: "")
+        textField.attributedPlaceholder = NSAttributedString(
+            string: NSLocalizedString("createhabit.trackername.placeholder", comment: ""),
+            attributes: [
+                .foregroundColor: UIColor.lightGray,
+                .font: UIFont.systemFont(ofSize: 17, weight: .regular)
+            ]
+        )
         textField.font = .systemFont(ofSize: 17, weight: .regular)
         textField.layer.cornerRadius = 16
         textField.clipsToBounds = true
@@ -77,8 +84,8 @@ final class CreateIrregularEventViewController: UIViewController {
         let button = UIButton()
         button.setTitle(NSLocalizedString("createhabit.create.button", comment: ""), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.titleLabel?.textColor = .white
-        button.backgroundColor = .trackerGray
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .white
         button.layer.cornerRadius = 16
         button.clipsToBounds = true
         return button
@@ -107,7 +114,7 @@ final class CreateIrregularEventViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .trackerWhite
         setUpConstraints()
         tableView.dataSource = self
         tableView.delegate = self
@@ -136,6 +143,8 @@ final class CreateIrregularEventViewController: UIViewController {
         createButton.addTarget(self, action: #selector(createButtonTapped(_:)), for: .touchUpInside)
         trackerNameTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         clearButton.addTarget(self, action: #selector(clearButtonTapped), for: .touchUpInside)
+        
+        activateCreateButton()
     }
     
     // MARK: - Actions
@@ -186,7 +195,7 @@ final class CreateIrregularEventViewController: UIViewController {
             && isColorSelected == true {
             createButton.isEnabled = true
             createButton.backgroundColor = .trackerBlack
-            createButton.titleLabel?.textColor = .trackerWhite
+            createButton.setTitleColor(.trackerWhite, for: .normal)
         } else {
             createButton.isEnabled = false
             createButton.backgroundColor = .trackerGray
@@ -293,7 +302,7 @@ extension CreateIrregularEventViewController: UITableViewDataSource {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: TrackerCell.cellIdentifier)
         cell.textLabel?.text = tableOptions[indexPath.row]
         cell.textLabel?.font = .systemFont(ofSize: 17, weight: .regular)
-        cell.textLabel?.textColor = .black
+        cell.textLabel?.textColor = .trackerBlack
         cell.backgroundColor = .trackerBackground
         cell.accessoryType = .disclosureIndicator
         cell.detailTextLabel?.font = .systemFont(ofSize: 17, weight: .regular)

@@ -48,6 +48,7 @@ final class ScheduleViewController: UIViewController {
         tableView.layer.cornerRadius = 16
         tableView.clipsToBounds = true
         tableView.separatorStyle = .singleLine
+        tableView.separatorColor = .gray
         tableView.rowHeight = 75
         return tableView
     }()
@@ -64,7 +65,7 @@ final class ScheduleViewController: UIViewController {
         let button = UIButton()
         button.setTitle(NSLocalizedString("scheduleview.done.button", comment: ""), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.titleLabel?.textColor = .white
+        button.setTitleColor(.trackerWhite, for: .normal)
         button.backgroundColor = .trackerBlack
         button.layer.cornerRadius = 16
         button.clipsToBounds = true
@@ -75,7 +76,7 @@ final class ScheduleViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .trackerWhite
         tableView.dataSource = self
         setUpConstraints()
         doneButton.addTarget(self, action: #selector(doneButtonTapped(_:)), for: .touchUpInside)
@@ -137,12 +138,15 @@ extension ScheduleViewController: UITableViewDataSource {
         let cell = UITableViewCell(style: .default, reuseIdentifier: cellIdentifier)
         cell.textLabel?.text = WeekDay.allCases[indexPath.row].fullName
         cell.textLabel?.font = .systemFont(ofSize: 17, weight: .regular)
-        cell.textLabel?.textColor = .black
+        cell.textLabel?.textColor = .trackerBlack
         cell.backgroundColor = .trackerBackground
         
         let toggle = UISwitch()
         toggle.isOn = selectedWeekDays.contains(WeekDay.allCases[indexPath.row])
         toggle.tag = indexPath.row
+        toggle.backgroundColor = .white
+        toggle.clipsToBounds = true
+        toggle.layer.cornerRadius = 16
         toggle.onTintColor = .trackerBlue
         toggle.addTarget(self, action: #selector(switchToggled(_:)), for: .valueChanged)
         
