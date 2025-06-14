@@ -72,3 +72,4 @@
 "tracker.filter.today" = "Trackers for today";
 "tracker.filter.completed" = "Completed";
 "tracker.filter.notCompleted" = "Not completed";
+"trackerview.nothing.found" = "Nothing found";
