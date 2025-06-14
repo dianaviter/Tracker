@@ -275,6 +275,7 @@ final class TrackerViewController: UIViewController {
             trackerStore = try TrackerStore(context: context)
             trackerRecordStore = try TrackerRecordStore(context: context)
             trackerCategoryStore = try TrackerCategoryStore(context: context)
+            TrackerRecordStore.shared = trackerRecordStore
             trackerStore?.delegate = self
             
             categories = trackerCategoryStore?.trackerCategories() ?? []
@@ -290,21 +291,35 @@ final class TrackerViewController: UIViewController {
     }
     
     private func showContentOrPlaceholder() {
-        let hasTrackers = visibleCategories.contains { !$0.trackers.isEmpty }
-        let isSearching = !(searchButton.text ?? "").isEmpty
-        let isFiltering = currentSelectedFilter != .all
+        // Все трекеры, отфильтрованные по дню недели/дате — как в updateVisibleCategories
+        let selectedWeekdayIndex = Calendar.current.component(.weekday, from: datePicker.date)
+        let weekDaysOrdered: [WeekDay] = [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]
+        let selectedWeekday = weekDaysOrdered[selectedWeekdayIndex - 1]
 
-        collectionView.isHidden = !hasTrackers
-        firstTrackerImageView.isHidden = true
-        imageTextLabel.isHidden = true
-        filterButton.isHidden = !hasTrackers && !isFiltering && !isSearching
+        let allTrackersForDate = categories.flatMap { $0.trackers }.filter { tracker in
+            guard let schedule = tracker.schedule, !schedule.isEmpty else { return true }
+            return schedule.contains(selectedWeekday)
+        }
 
-        let shouldShowNothingFound = !hasTrackers && (isFiltering || isSearching)
-        nothingFoundImageView.isHidden = !shouldShowNothingFound
-        nothingFoundLabel.isHidden = !shouldShowNothingFound
+        let isSearchActive = !(searchButton.text ?? "").isEmpty
+        let isFilterApplied = currentSelectedFilter != .all
+        let hasVisibleTrackers = visibleCategories.flatMap { $0.trackers }.isEmpty == false
+
+        collectionView.isHidden = !hasVisibleTrackers
+        filterButton.isHidden = !hasVisibleTrackers
+
+        let showFirstPlaceholder = allTrackersForDate.isEmpty
+        firstTrackerImageView.isHidden = !showFirstPlaceholder
+        imageTextLabel.isHidden = !showFirstPlaceholder
+
+        let showNothingFound = !hasVisibleTrackers && !showFirstPlaceholder && (isSearchActive || isFilterApplied)
+        nothingFoundImageView.isHidden = !showNothingFound
+        nothingFoundLabel.isHidden = !showNothingFound
 
         collectionView.reloadData()
     }
+
+
     
     func addNewTracker(_ tracker: Tracker, to category: TrackerCategory) {
         do {

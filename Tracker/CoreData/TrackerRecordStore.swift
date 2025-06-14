@@ -27,6 +27,7 @@ protocol TrackerRecordStoreDelegate: AnyObject {
 }
 
 final class TrackerRecordStore: NSObject {
+    static var shared: TrackerRecordStore?
     private var context: NSManagedObjectContext
     var fetchedResultsController: NSFetchedResultsController<TrackerRecordCoreData>
     

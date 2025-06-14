@@ -73,3 +73,7 @@
 "tracker.filter.completed" = "Completed";
 "tracker.filter.notCompleted" = "Not completed";
 "trackerview.nothing.found" = "Nothing found";
+
+"statistics.title" = "Statistics";
+"statistics.placeholder" = "Nothing to analyze yet";
+"statistics.card.completed" = "Trackers completed";

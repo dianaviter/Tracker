@@ -74,5 +74,9 @@
 "tracker.filter.notCompleted" = "Не завершенные";
 "trackerview.nothing.found" = "Ничего не найдено";
 
+"statistics.title" = "Статистика";
+"statistics.placeholder" = "Анализировать пока нечего";
+"statistics.card.completed" = "Трекеров завершено";
+
 
 
