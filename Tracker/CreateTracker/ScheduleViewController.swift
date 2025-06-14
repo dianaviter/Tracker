@@ -48,7 +48,7 @@ final class ScheduleViewController: UIViewController {
         tableView.layer.cornerRadius = 16
         tableView.clipsToBounds = true
         tableView.separatorStyle = .singleLine
-        tableView.separatorColor = .gray
+        tableView.separatorColor = .trackerGray
         tableView.rowHeight = 75
         return tableView
     }()

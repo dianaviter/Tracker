@@ -66,6 +66,12 @@
 "delete.cancel" = "Отменить";
 
 "categoryview.placeholder.text" = "Привычки и события можно объединять по смыслу";
+"trackerview.filter.button" = "Фильтры";
+"filter.title" = "Фильтры";
+"tracker.filter.all" = "Все трекеры";
+"tracker.filter.today" = "Трекеры на сегодня";
+"tracker.filter.completed" = "Завершенные";
+"tracker.filter.notCompleted" = "Не завершенные";
 
 
 

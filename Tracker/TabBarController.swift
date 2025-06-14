@@ -8,16 +8,19 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
+    
+    private var tabBarSeparator: UIView?
+    
     override func viewDidLoad () {
         super.viewDidLoad()
-
+        
         let trackerViewController = TrackerViewController()
         trackerViewController.tabBarItem = UITabBarItem(
             title: NSLocalizedString("trackerview.title", comment: ""),
             image: UIImage(named: "trackersTabBarIcon"),
             selectedImage: nil
         )
-    
+        
         let statisticsViewController = StatisticsViewController()
         statisticsViewController.tabBarItem = UITabBarItem(
             title: NSLocalizedString("tabbar.statistics.title", comment: ""),
@@ -41,5 +44,20 @@ final class TabBarController: UITabBarController {
             separator.heightAnchor.constraint(equalToConstant: 0.5),
             separator.topAnchor.constraint(equalTo: tabBar.topAnchor)
         ])
+        
+        tabBarSeparator = separator
+    }
+    
+    func updateSeparatorColor() {
+        if traitCollection.userInterfaceStyle == .dark {
+            tabBarSeparator?.backgroundColor = .clear
+        } else {
+            tabBarSeparator?.backgroundColor = .trackerGray
+        }
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        updateSeparatorColor()
     }
 }

@@ -30,6 +30,7 @@ final class TrackerViewController: UIViewController {
     private var coreDataStack = CoreDataStack()
     private var trackerRecordStore: TrackerRecordStore?
     private var trackerCategoryStore: TrackerCategoryStore?
+    private var currentSelectedFilter: TrackerFilter = .all
     
     // MARK: - UI Elements
     
@@ -92,6 +93,17 @@ final class TrackerViewController: UIViewController {
         return picker
     }()
     
+    private let filterButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle(NSLocalizedString("trackerview.filter.button", comment: ""), for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 17, weight: .medium)
+        button.backgroundColor = .trackerBlue
+        button.layer.cornerRadius = 16
+        button.clipsToBounds = true
+        return button
+    }()
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -102,6 +114,7 @@ final class TrackerViewController: UIViewController {
         datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
         addTracker.addTarget(self, action: #selector(addButtonCLicked(_:)), for: .touchUpInside)
         searchButton.addTarget(self, action: #selector(searchTextChanged(_:)), for: .editingChanged)
+        filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
         
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -121,6 +134,15 @@ final class TrackerViewController: UIViewController {
     }
     
     // MARK: - Actions
+    
+    @objc private func filterButtonTapped() {
+        let filtersVC = FiltersViewController()
+        filtersVC.selectedFilter = currentSelectedFilter
+        filtersVC.onFilterSelected = { [weak self] selected in
+            self?.applyFilter(selected)
+        }
+        present(filtersVC, animated: true)
+    }
     
     @objc private func searchTextChanged(_ sender: UISearchTextField) {
         let query = sender.text?.lowercased() ?? ""
@@ -155,6 +177,35 @@ final class TrackerViewController: UIViewController {
     }
     
     // MARK: - Actions
+    
+    private func applyFilter(_ filter: TrackerFilter) {
+        currentSelectedFilter = filter
+
+        switch filter {
+        case .all:
+            visibleCategories = filteredCategories
+        case .today:
+            updateVisibleCategories(for: currentDate)
+        case .completed:
+            visibleCategories = filteredCategories.map { category in
+                let filtered = category.trackers.filter { tracker in
+                    completedTrackers.contains { $0.id == tracker.id }
+                }
+                return TrackerCategory(header: category.header, trackers: filtered)
+            }.filter { !$0.trackers.isEmpty }
+
+        case .notCompleted:
+            visibleCategories = filteredCategories.map { category in
+                let filtered = category.trackers.filter { tracker in
+                    !completedTrackers.contains { $0.id == tracker.id }
+                }
+                return TrackerCategory(header: category.header, trackers: filtered)
+            }.filter { !$0.trackers.isEmpty }
+        }
+
+        collectionView.reloadData()
+        showContentOrPlaceholder()
+    }
     
     private func updateDatePickerStyle() {
         if traitCollection.userInterfaceStyle == .dark {
@@ -287,7 +338,7 @@ final class TrackerViewController: UIViewController {
     private func setUpConstraints() {
         let tabBarHeight = tabBarController?.tabBar.frame.height ?? 84
         
-        [firstTrackerImageView, imageTextLabel, addTracker, trackerLabel, searchButton, datePicker, collectionView].forEach {
+        [firstTrackerImageView, imageTextLabel, addTracker, trackerLabel, searchButton, datePicker, collectionView, filterButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
@@ -320,7 +371,12 @@ final class TrackerViewController: UIViewController {
             collectionView.topAnchor.constraint(equalTo: searchButton.bottomAnchor, constant: 24),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -tabBarHeight)
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -tabBarHeight),
+            
+            filterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            filterButton.heightAnchor.constraint(equalToConstant: 50),
+            filterButton.widthAnchor.constraint(equalToConstant: 114)
         ])
     }
 }

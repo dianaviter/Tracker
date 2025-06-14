@@ -66,3 +66,9 @@
 "delete.cancel" = "Cancel";
 
 "categoryview.placeholder.text" = "Habits and events can be combined by meaning";
+"trackerview.filter.button" = "Filters";
+"filter.title" = "Filters";
+"tracker.filter.all" = "All trackers";
+"tracker.filter.today" = "Trackers for today";
+"tracker.filter.completed" = "Completed";
+"tracker.filter.notCompleted" = "Not completed";
