@@ -9,9 +9,19 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>TrackerTests.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>12B53D162E00A4DB00D4E413</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>12DBCF352D95F050005E6202</key>
 		<dict>
 			<key>primary</key>
