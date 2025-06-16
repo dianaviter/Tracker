@@ -73,13 +73,13 @@ final class StatisticsViewController: UIViewController {
         let remainder100 = count % 100
 
         if remainder100 >= 11 && remainder100 <= 14 {
-            return "Трекеров"
+            return "Трекеров завершено"
         } else if remainder10 == 1 {
-            return "Трекер"
+            return "Трекер завершен"
         } else if remainder10 >= 2 && remainder10 <= 4 {
-            return "Трекера"
+            return "Трекера завершено"
         } else {
-            return "Трекеров"
+            return "Трекеров завершено"
         }
     }
     
@@ -91,7 +91,7 @@ final class StatisticsViewController: UIViewController {
             if totalCompletedTrackers ?? 0 > 0 {
                 let value = totalCompletedTrackers ?? 0
                 let word = localizedTrackersCount(value)
-                completedTrackersView.configure(value: "\(value)", title: "\(word) завершено")
+                completedTrackersView.configure(value: "\(value)", title: "\(word)")
                 completedTrackersView.isHidden = false
                 placeholderImageView.isHidden = true
                 placeholderLabel.isHidden = true

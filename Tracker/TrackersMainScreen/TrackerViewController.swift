@@ -149,6 +149,16 @@ final class TrackerViewController: UIViewController {
         updateDatePickerStyle()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        logMainScreenEvent(event: .open)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        logMainScreenEvent(event: .close)
+    }
+    
     // MARK: - Actions
     
     @objc private func filterButtonTapped() {
@@ -158,6 +168,7 @@ final class TrackerViewController: UIViewController {
             self?.applyFilter(selected)
         }
         present(filtersVC, animated: true)
+        logMainScreenEvent(event: .click, item: .filter)
     }
     
     @objc private func searchTextChanged(_ sender: UISearchTextField) {
@@ -217,6 +228,7 @@ final class TrackerViewController: UIViewController {
             self?.collectionView.reloadData()
         }
         present(vc, animated: true)
+        logMainScreenEvent(event: .click, item: .add_track)
     }
     
     // MARK: - Actions
@@ -485,6 +497,7 @@ extension TrackerViewController: UICollectionViewDataSource {
         cell?.onPlusTapped = { [weak self] in
             self?.updateNumberOfDays(tracker)
             self?.collectionView.reloadItems(at: [indexPath])
+            logMainScreenEvent(event: .click, item: .track)
         }
         return cell ?? UICollectionViewCell()
     }
@@ -580,6 +593,7 @@ extension TrackerViewController: UICollectionViewDelegate {
                     try? self?.trackerStore?.updateTracker(updatedTracker, inCategoryWithHeader: updatedCategory.header)
                 }
                 self.present(habitVC, animated: true)
+                logMainScreenEvent(event: .click, item: .edit)
             }
             
             let deleteAction = UIAction(title: NSLocalizedString("context.menu.delete", comment: ""), attributes: .destructive) { [weak self] _ in
@@ -606,6 +620,7 @@ extension TrackerViewController: UICollectionViewDelegate {
                 
                 self.present(alert, animated: true)
             }
+            logMainScreenEvent(event: .click, item: .delete)
             
             return UIMenu(title: "", children: [pinAction, editAction, deleteAction])
         }
