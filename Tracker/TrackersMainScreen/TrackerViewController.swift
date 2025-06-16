@@ -175,7 +175,10 @@ final class TrackerViewController: UIViewController {
         let query = sender.text?.lowercased() ?? ""
         
         if query.isEmpty {
-            visibleCategories = filteredCategories
+            visibleCategories = filteredCategories.filter {
+                !$0.trackers.isEmpty &&
+                !($0.header?.trimmingCharacters(in: .whitespaces).isEmpty ?? true)
+            }
         } else {
             visibleCategories = filteredCategories.map { category in
                 let filteredTrackers = category.trackers.filter {
@@ -183,12 +186,14 @@ final class TrackerViewController: UIViewController {
                     return name.lowercased().contains(query)
                 }
                 return TrackerCategory(header: category.header, trackers: filteredTrackers)
-            }.filter { !$0.trackers.isEmpty }
+            }.filter {
+                !$0.trackers.isEmpty &&
+                !($0.header?.trimmingCharacters(in: .whitespaces).isEmpty ?? true)
+            }
         }
         
         showContentOrPlaceholder()
     }
-    
     
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
         switch currentSelectedFilter {
@@ -239,36 +244,33 @@ final class TrackerViewController: UIViewController {
         switch filter {
         case .all:
             updateVisibleCategories(for: datePicker.date)
+            
         case .today:
             let today = Date()
             datePicker.setDate(today, animated: true)
             updateVisibleCategories(for: today)
-        case .completed:
-            visibleCategories = filteredCategories.map { category in
-                let filtered = category.trackers.filter { tracker in
-                    completedTrackers.contains {
-                        $0.id == tracker.id &&
-                        Calendar.current.isDate($0.date, inSameDayAs: datePicker.date)
+            
+        case .completed, .notCompleted:
+            visibleCategories = filteredCategories
+                .compactMap { category -> TrackerCategory? in
+                    let filtered = category.trackers.filter { tracker in
+                        let isCompleted = completedTrackers.contains {
+                            $0.id == tracker.id &&
+                            Calendar.current.isDate($0.date, inSameDayAs: datePicker.date)
+                        }
+                        return filter == .completed ? isCompleted : !isCompleted
                     }
+                    
+                    let trimmedHeader = category.header?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+                    guard !filtered.isEmpty, !trimmedHeader.isEmpty else { return nil }
+                    
+                    return TrackerCategory(header: trimmedHeader, trackers: filtered)
                 }
-                return TrackerCategory(header: category.header, trackers: filtered)
-            }.filter { !$0.trackers.isEmpty }
-        case .notCompleted:
-            visibleCategories = filteredCategories.map { category in
-                let filtered = category.trackers.filter { tracker in
-                    !completedTrackers.contains {
-                        $0.id == tracker.id &&
-                        Calendar.current.isDate($0.date, inSameDayAs: datePicker.date)
-                    }
-                }
-                return TrackerCategory(header: category.header, trackers: filtered)
-            }.filter { !$0.trackers.isEmpty }
         }
         
         collectionView.reloadData()
         showContentOrPlaceholder()
     }
-    
     
     private func updateDatePickerStyle() {
         if traitCollection.userInterfaceStyle == .dark {
@@ -303,7 +305,6 @@ final class TrackerViewController: UIViewController {
     }
     
     private func showContentOrPlaceholder() {
-        // Все трекеры, отфильтрованные по дню недели/дате — как в updateVisibleCategories
         let selectedWeekdayIndex = Calendar.current.component(.weekday, from: datePicker.date)
         let weekDaysOrdered: [WeekDay] = [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]
         let selectedWeekday = weekDaysOrdered[selectedWeekdayIndex - 1]
@@ -317,8 +318,10 @@ final class TrackerViewController: UIViewController {
         let isFilterApplied = currentSelectedFilter != .all
         let hasVisibleTrackers = visibleCategories.flatMap { $0.trackers }.isEmpty == false
 
+        let shouldHideFilterButton = !isFilterApplied && !isSearchActive && allTrackersForDate.isEmpty
+
         collectionView.isHidden = !hasVisibleTrackers
-        filterButton.isHidden = !hasVisibleTrackers
+        filterButton.isHidden = shouldHideFilterButton
 
         let showFirstPlaceholder = allTrackersForDate.isEmpty
         firstTrackerImageView.isHidden = !showFirstPlaceholder
@@ -330,8 +333,6 @@ final class TrackerViewController: UIViewController {
 
         collectionView.reloadData()
     }
-
-
     
     func addNewTracker(_ tracker: Tracker, to category: TrackerCategory) {
         do {
