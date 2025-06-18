@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -46,6 +46,7 @@
 		12DBCF712D95FC6C005E6202 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DBCF702D95FC6C005E6202 /* TabBarController.swift */; };
 		12DBCF732D96C8C0005E6202 /* TrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DBCF722D96C8C0005E6202 /* TrackerViewController.swift */; };
 		12DBCF752D96C93C005E6202 /* StatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DBCF742D96C93C005E6202 /* StatisticsViewController.swift */; };
+		573FB10ABADCD49E02903088 /* Pods_TrackerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E321E03BF38F925F3323DE4 /* Pods_TrackerTests.framework */; };
 		70FB16713B89C797138259F4 /* Pods_Tracker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF8E4B868D6524E093FE07EB /* Pods_Tracker.framework */; };
 /* End PBXBuildFile section */
 
@@ -127,6 +128,7 @@
 				12B53D342E00A5FA00D4E413 /* SnapshotTestingCustomDump in Frameworks */,
 				12B53D302E00A5FA00D4E413 /* InlineSnapshotTesting in Frameworks */,
 				12B53D322E00A5FA00D4E413 /* SnapshotTesting in Frameworks */,
+				573FB10ABADCD49E02903088 /* Pods_TrackerTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -301,6 +303,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 12B53D1D2E00A4DB00D4E413 /* Build configuration list for PBXNativeTarget "TrackerTests" */;
 			buildPhases = (
+				C53E92C8AB4C1C8823DA241F /* [CP] Check Pods Manifest.lock */,
 				12B53D132E00A4DB00D4E413 /* Sources */,
 				12B53D142E00A4DB00D4E413 /* Frameworks */,
 				12B53D152E00A4DB00D4E413 /* Resources */,
@@ -408,6 +411,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		C53E92C8AB4C1C8823DA241F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TrackerTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		C887EC9D41D2CAA505345599 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -522,6 +547,7 @@
 /* Begin XCBuildConfiguration section */
 		12B53D1E2E00A4DB00D4E413 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = ED4479E8A7686CF5C0955114 /* Pods-TrackerTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -541,6 +567,7 @@
 		};
 		12B53D1F2E00A4DB00D4E413 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F3DFE4C2DDB81232A31885AB /* Pods-TrackerTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
