@@ -326,7 +326,7 @@ extension CreateIrregularEventViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         
         if indexPath.row == 0 {
-            guard let store = try? TrackerCategoryStore(context: coreDataStack.context) else { return }
+            guard let store = try? TrackerCategoryStore(context: context) else { return }
 
             let viewModel = CategoryViewModel(store: store)
             let vcCategory = CategoryViewController(viewModel: viewModel, selectedCategory: self.selectedCategory)

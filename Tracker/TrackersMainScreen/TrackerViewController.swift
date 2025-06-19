@@ -27,7 +27,7 @@ final class TrackerViewController: UIViewController {
     }()
     private var currentDate = Date()
     private var trackerStore: TrackerStore?
-    private var coreDataStack = CoreDataStack()
+    let context = CoreDataStack.shared.context
     private var trackerRecordStore: TrackerRecordStore?
     private var trackerCategoryStore: TrackerCategoryStore?
     private var currentSelectedFilter: TrackerFilter = .all
@@ -283,8 +283,6 @@ final class TrackerViewController: UIViewController {
     }
     
     private func initializeStores() {
-        let context = coreDataStack.persistentContainer.viewContext
-        
         do {
             trackerStore = try TrackerStore(context: context)
             trackerRecordStore = try TrackerRecordStore(context: context)
