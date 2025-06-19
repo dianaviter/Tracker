@@ -6,6 +6,21 @@
 //
 
 import UIKit
+import YandexMobileMetrica
+
+enum TrackerEvent: String {
+    case open
+    case close
+    case click
+}
+
+enum TrackerItem: String {
+    case addTrack
+    case track
+    case filter
+    case edit
+    case delete
+}
 
 // MARK: - ViewController
 
@@ -158,6 +173,7 @@ final class TrackerViewController: UIViewController {
         super.viewDidDisappear(animated)
         logMainScreenEvent(event: .close)
     }
+
     
     // MARK: - Actions
     
@@ -233,10 +249,24 @@ final class TrackerViewController: UIViewController {
             self?.collectionView.reloadData()
         }
         present(vc, animated: true)
-        logMainScreenEvent(event: .click, item: .add_track)
+        logMainScreenEvent(event: .click, item: .addTrack)
     }
     
     // MARK: - Actions
+    
+    private func logMainScreenEvent(event: TrackerEvent, item: TrackerItem? = nil) {
+        var parameters: [String: Any] = [
+            "event": event.rawValue,
+            "screen": "Main"
+        ]
+        if let item = item {
+            parameters["item"] = item.rawValue
+        }
+        
+        YMMYandexMetrica.reportEvent("main_screen", parameters: parameters)
+        
+        print("[LOG] main_screen: \(parameters)")
+    }
     
     private func applyFilter(_ filter: TrackerFilter) {
         currentSelectedFilter = filter
@@ -496,12 +526,12 @@ extension TrackerViewController: UICollectionViewDataSource {
         cell?.onPlusTapped = { [weak self] in
             self?.updateNumberOfDays(tracker)
             self?.collectionView.reloadItems(at: [indexPath])
-            logMainScreenEvent(event: .click, item: .track)
+            self?.logMainScreenEvent(event: .click, item: .track)
         }
         return cell ?? UICollectionViewCell()
     }
     
-    internal func collectionView(_: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    func collectionView(_: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard kind == UICollectionView.elementKindSectionHeader else {
             fatalError("Unsupported kind: \(kind)")
         }
@@ -619,7 +649,7 @@ extension TrackerViewController: UICollectionViewDelegate {
                 
                 self.present(alert, animated: true)
             }
-            logMainScreenEvent(event: .click, item: .delete)
+            self?.logMainScreenEvent(event: .click, item: .delete)
             
             return UIMenu(title: "", children: [pinAction, editAction, deleteAction])
         }

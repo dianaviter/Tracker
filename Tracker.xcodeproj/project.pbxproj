@@ -3,11 +3,10 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1215E5562E0091DD00C78793 /* YandexMobileMetricaHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1215E5552E0091CD00C78793 /* YandexMobileMetricaHelper.swift */; };
 		121FDFA02DB6784C00FD23CE /* Models.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 121FDF9E2DB6784C00FD23CE /* Models.xcdatamodeld */; };
 		121FDFA42DB6AAF800FD23CE /* TrackerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121FDFA32DB6AAF700FD23CE /* TrackerStore.swift */; };
 		121FDFA62DB6AB1700FD23CE /* TrackerCategoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121FDFA52DB6AB1400FD23CE /* TrackerCategoryStore.swift */; };
@@ -62,7 +61,6 @@
 
 /* Begin PBXFileReference section */
 		0D11882DE309FD62ACC3E9A7 /* Pods-Tracker-TrackerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tracker-TrackerUITests.release.xcconfig"; path = "Target Support Files/Pods-Tracker-TrackerUITests/Pods-Tracker-TrackerUITests.release.xcconfig"; sourceTree = "<group>"; };
-		1215E5552E0091CD00C78793 /* YandexMobileMetricaHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexMobileMetricaHelper.swift; sourceTree = "<group>"; };
 		121E626A2E0096F700DC978D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		121FDF9F2DB6784C00FD23CE /* Models.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Models.xcdatamodel; sourceTree = "<group>"; };
 		121FDFA22DB68DF000FD23CE /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
@@ -253,7 +251,6 @@
 		12DBCF382D95F050005E6202 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
-				1215E5552E0091CD00C78793 /* YandexMobileMetricaHelper.swift */,
 				12DBCF392D95F050005E6202 /* AppDelegate.swift */,
 				12DBCF3B2D95F050005E6202 /* SceneDelegate.swift */,
 				12DBCF3D2D95F050005E6202 /* ViewController.swift */,
@@ -476,7 +473,6 @@
 				121FDFAB2DBBAB2300FD23CE /* CoreDataStack.swift in Sources */,
 				1240D0C12DADB136001A10A9 /* TrackerRecord.swift in Sources */,
 				1240D0D32DAEF6A5001A10A9 /* TrackerColorCollectionView.swift in Sources */,
-				1215E5562E0091DD00C78793 /* YandexMobileMetricaHelper.swift in Sources */,
 				1226E5872DCBF70B008120B7 /* OnboardingViewController.swift in Sources */,
 				121FDFA82DB6AB2D00FD23CE /* TrackerRecordStore.swift in Sources */,
 				1240D0BF2DADB110001A10A9 /* TrackerCategory.swift in Sources */,
