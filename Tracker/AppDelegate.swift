@@ -19,19 +19,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
         YMMYandexMetrica.activate(with: configuration)
 
-        YMMYandexMetrica.reportEvent("main_screen", parameters: [
-            "event": "open",
-            "screen": "Main"
-        ])
-
         return true
-    }
-    
-    func applicationWillTerminate(_ application: UIApplication) {
-        YMMYandexMetrica.reportEvent("main_screen", parameters: [
-            "event": "close",
-            "screen": "Main"
-        ])
     }
 
     // MARK: UISceneSession Lifecycle
