@@ -168,12 +168,12 @@ final class TrackerViewController: UIViewController {
         super.viewDidAppear(animated)
         logMainScreenEvent(event: .open)
     }
-
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         logMainScreenEvent(event: .close)
     }
-
+    
     
     // MARK: - Actions
     
@@ -336,29 +336,29 @@ final class TrackerViewController: UIViewController {
         let selectedWeekdayIndex = Calendar.current.component(.weekday, from: datePicker.date)
         let weekDaysOrdered: [WeekDay] = [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]
         let selectedWeekday = weekDaysOrdered[selectedWeekdayIndex - 1]
-
+        
         let allTrackersForDate = categories.flatMap { $0.trackers }.filter { tracker in
             guard let schedule = tracker.schedule, !schedule.isEmpty else { return true }
             return schedule.contains(selectedWeekday)
         }
-
+        
         let isSearchActive = !(searchButton.text ?? "").isEmpty
         let isFilterApplied = currentSelectedFilter != .all
         let hasVisibleTrackers = visibleCategories.flatMap { $0.trackers }.isEmpty == false
-
+        
         let shouldHideFilterButton = !isFilterApplied && !isSearchActive && allTrackersForDate.isEmpty
-
+        
         collectionView.isHidden = !hasVisibleTrackers
         filterButton.isHidden = shouldHideFilterButton
-
+        
         let showFirstPlaceholder = allTrackersForDate.isEmpty
         firstTrackerImageView.isHidden = !showFirstPlaceholder
         imageTextLabel.isHidden = !showFirstPlaceholder
-
+        
         let showNothingFound = !hasVisibleTrackers && !showFirstPlaceholder && (isSearchActive || isFilterApplied)
         nothingFoundImageView.isHidden = !showNothingFound
         nothingFoundLabel.isHidden = !showNothingFound
-
+        
         collectionView.reloadData()
     }
     
@@ -568,7 +568,9 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        let isLastSection = section == collectionView.numberOfSections - 1
+        let bottomInset: CGFloat = isLastSection ? 80 : 0
+        return UIEdgeInsets(top: 0, left: 16, bottom: bottomInset, right: 16)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

@@ -35,6 +35,11 @@ final class StatisticsViewController: UIViewController {
         label.textAlignment = .center
         return label
     }()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadStatistics()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
