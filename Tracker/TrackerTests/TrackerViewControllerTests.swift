@@ -1,8 +1,8 @@
 //
-//  TrackerTests.swift
-//  TrackerTests
+//  TrackerViewControllerTests.swift
+//  Tracker
 //
-//  Created by Diana Viter on 16.06.2025.
+//  Created by Diana Viter on 21.06.2025.
 //
 
 import XCTest
@@ -15,8 +15,7 @@ final class TrackerViewSnapshotTests: XCTestCase {
         let vc = TrackerViewController()
         assertSnapshot(
             of: vc,
-            as: .image(traits: .init(userInterfaceStyle: .light)),
-            record: false
+            as: .image(traits: .init(userInterfaceStyle: .light))
         )
     }
 
@@ -24,10 +23,7 @@ final class TrackerViewSnapshotTests: XCTestCase {
         let vc = TrackerViewController()
         assertSnapshot(
             of: vc,
-            as: .image(traits: .init(userInterfaceStyle: .dark)),
-            record: false
+            as: .image(traits: .init(userInterfaceStyle: .dark))
         )
     }
 }
-
-

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -26,6 +26,7 @@
 		1240D0D32DAEF6A5001A10A9 /* TrackerColorCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1240D0D22DAEF69C001A10A9 /* TrackerColorCollectionView.swift */; };
 		126EBD302D9ED4A4002C8133 /* TrackerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126EBD2F2D9ED49B002C8133 /* TrackerCell.swift */; };
 		126EBD342DA03FFF002C8133 /* TrackerSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126EBD332DA03FF8002C8133 /* TrackerSectionHeader.swift */; };
+		128F23882E06CF8400782B80 /* TrackerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128F23862E06CF0700782B80 /* TrackerViewControllerTests.swift */; };
 		12A5F0BD2DA31E3B0062C399 /* CreateTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A5F0BC2DA31E370062C399 /* CreateTrackerViewController.swift */; };
 		12A5F0BF2DA425540062C399 /* CreateNewHabitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A5F0BE2DA425420062C399 /* CreateNewHabitViewController.swift */; };
 		12A5F0C32DA4667E0062C399 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A5F0C22DA466750062C399 /* ScheduleViewController.swift */; };
@@ -81,6 +82,7 @@
 		126318782DCBE91900E88474 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		126EBD2F2D9ED49B002C8133 /* TrackerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCell.swift; sourceTree = "<group>"; };
 		126EBD332DA03FF8002C8133 /* TrackerSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerSectionHeader.swift; sourceTree = "<group>"; };
+		128F23862E06CF0700782B80 /* TrackerViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerViewControllerTests.swift; sourceTree = "<group>"; };
 		12A5F0BC2DA31E370062C399 /* CreateTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerViewController.swift; sourceTree = "<group>"; };
 		12A5F0BE2DA425420062C399 /* CreateNewHabitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewHabitViewController.swift; sourceTree = "<group>"; };
 		12A5F0C22DA466750062C399 /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
@@ -115,7 +117,6 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		1226E5982DCEAA63008120B7 /* CreateCategory */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = CreateCategory; sourceTree = "<group>"; };
-		12B53D182E00A4DB00D4E413 /* TrackerTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TrackerTests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,6 +193,14 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		128F237B2E06CD0700782B80 /* TrackerTests */ = {
+			isa = PBXGroup;
+			children = (
+				128F23862E06CF0700782B80 /* TrackerViewControllerTests.swift */,
+			);
+			path = TrackerTests;
+			sourceTree = "<group>";
+		};
 		12A5F0C62DAA8ADE0062C399 /* TrackersMainScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -232,7 +241,6 @@
 				12CF6E7B2DF5D59A00BF994C /* Localizable.stringsdict */,
 				12CF6E6F2DF5AD0F00BF994C /* Localizable.strings */,
 				12DBCF382D95F050005E6202 /* Tracker */,
-				12B53D182E00A4DB00D4E413 /* TrackerTests */,
 				12DBCF372D95F050005E6202 /* Products */,
 				9B3F3B523C8BA695EC6532C8 /* Pods */,
 				2763751E643EE409AD0F3391 /* Frameworks */,
@@ -263,6 +271,7 @@
 				12A5F0C82DAA8B260062C399 /* StatisticsScreen */,
 				126318792DCBE93800E88474 /* Helpers */,
 				12DBCF422D95F051005E6202 /* Assets.xcassets */,
+				128F237B2E06CD0700782B80 /* TrackerTests */,
 				12DBCF442D95F051005E6202 /* LaunchScreen.storyboard */,
 				12DBCF472D95F051005E6202 /* Info.plist */,
 			);
@@ -309,9 +318,6 @@
 			);
 			dependencies = (
 				12B53D1C2E00A4DB00D4E413 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				12B53D182E00A4DB00D4E413 /* TrackerTests */,
 			);
 			name = TrackerTests;
 			packageProductDependencies = (
@@ -459,6 +465,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				128F23882E06CF8400782B80 /* TrackerViewControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
