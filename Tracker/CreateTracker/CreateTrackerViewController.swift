@@ -17,9 +17,9 @@ final class CreateTrackerViewController: UIViewController {
         button.backgroundColor = .trackerBlack
         button.layer.cornerRadius = 16
         button.clipsToBounds = true
-        button.setTitle("Привычка", for: .normal)
+        button.setTitle(NSLocalizedString("create.tracker.habit.button", comment: ""), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.titleLabel?.textColor = .white
+        button.setTitleColor(.trackerWhite, for: .normal)
         return button
     }()
     
@@ -28,15 +28,15 @@ final class CreateTrackerViewController: UIViewController {
         button.backgroundColor = .trackerBlack
         button.layer.cornerRadius = 16
         button.clipsToBounds = true
-        button.setTitle("Нерегулярное событие", for: .normal)
+        button.setTitle(NSLocalizedString("create.tracker.irregularevent.button", comment: ""), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.titleLabel?.textColor = .white
+        button.setTitleColor(.trackerWhite, for: .normal)
         return button
     }()
     
     let textLabel: UILabel = {
         let label = UILabel()
-        label.text = "Создание трекера"
+        label.text = NSLocalizedString("createtracker.title", comment: "")
         label.textColor = .trackerBlack
         label.font = .systemFont(ofSize: 16, weight: .medium)
         return label
@@ -45,7 +45,7 @@ final class CreateTrackerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpConstraints()
-        view.backgroundColor = .white
+        view.backgroundColor = .trackerWhite
         habitButton.addTarget(self, action: #selector(createHabitButtonTapped(_:)), for: .touchUpInside)
         irregularEventButton.addTarget(self, action: #selector(createIrregularEventButtonTapped(_:)), for: .touchUpInside)
     }

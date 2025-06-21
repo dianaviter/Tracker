@@ -18,7 +18,7 @@ final class CreateNewCategoryViewController: UIViewController {
     
     private let textLabel: UILabel = {
         let label = UILabel()
-        label.text = "Новая категория"
+        label.text = NSLocalizedString("createcategory.title", comment: "")
         label.textColor = .trackerBlack
         label.font = .systemFont(ofSize: 16, weight: .medium)
         return label
@@ -26,7 +26,13 @@ final class CreateNewCategoryViewController: UIViewController {
     
     private let categoryNameTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Введите название категории"
+        textField.attributedPlaceholder = NSAttributedString(
+            string: NSLocalizedString("createcategory.name.placeholder", comment: ""),
+            attributes: [
+                .foregroundColor: UIColor.lightGray,
+                .font: UIFont.systemFont(ofSize: 17, weight: .regular)
+            ]
+        )
         textField.font = .systemFont(ofSize: 17, weight: .regular)
         textField.layer.cornerRadius = 16
         textField.clipsToBounds = true
@@ -38,21 +44,22 @@ final class CreateNewCategoryViewController: UIViewController {
     
     private let createButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Готово", for: .normal)
+        button.setTitle(NSLocalizedString("createcategory.done.button", comment: ""), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.titleLabel?.textColor = .white
+        button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .trackerGray
         button.layer.cornerRadius = 16
         button.clipsToBounds = true
         return button
     }()
     
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
+        view.backgroundColor = .trackerWhite
         
         categoryNameTextField.addTarget(self, action: #selector(categoryNameTextFieldDidChange(_:)), for: .editingChanged)
         createButton.addTarget(self, action: #selector(createButtonTapped(_:)), for: .touchUpInside)
@@ -113,6 +120,7 @@ final class CreateNewCategoryViewController: UIViewController {
         
         if !name.isEmpty {
             createButton.isEnabled = true
+            createButton.setTitleColor(.trackerWhite, for: .normal)
             createButton.backgroundColor = .trackerBlack
         } else {
             createButton.isEnabled = false

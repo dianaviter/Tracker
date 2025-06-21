@@ -11,6 +11,10 @@ import CoreData
 
 final class CoreDataStack {
     
+    static let shared = CoreDataStack()
+
+    private init() { }  
+    
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Models")
         container.loadPersistentStores { (description, error) in
@@ -38,5 +42,5 @@ final class CoreDataStack {
     }
 }
 
-let coreDataStack = CoreDataStack()
-let trackerCategoryStore = try! TrackerCategoryStore(context: coreDataStack.context)
+let context = CoreDataStack.shared.context
+let trackerCategoryStore = try? TrackerCategoryStore(context: context)

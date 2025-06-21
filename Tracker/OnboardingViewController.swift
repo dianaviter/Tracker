@@ -17,19 +17,19 @@ final class OnboardingViewController: UIPageViewController {
     
     private let onboardingButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Вот это технологии!", for: .normal)
+        button.setTitle(NSLocalizedString("onboarding.button.title", comment: ""), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.titleLabel?.textColor = .trackerWhite
+        button.titleLabel?.textColor = .white
         button.layer.cornerRadius = 16
         button.clipsToBounds = true
-        button.backgroundColor = .trackerBlack
+        button.backgroundColor = .black
         return button
     }()
     
     private let textLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 32, weight: .bold)
-        label.textColor = .trackerBlack
+        label.textColor = .black
         label.textAlignment = .center
         label.numberOfLines = 2
         return label
@@ -39,8 +39,8 @@ final class OnboardingViewController: UIPageViewController {
         let pc = UIPageControl()
         pc.currentPage = 0
         pc.numberOfPages = onboardingPages.count
-        pc.currentPageIndicatorTintColor = .trackerBlack
-        pc.pageIndicatorTintColor = .trackerGray
+        pc.currentPageIndicatorTintColor = .black
+        pc.pageIndicatorTintColor = .gray
         return pc
     }()
     
@@ -120,10 +120,10 @@ final class OnboardingViewController: UIPageViewController {
               let index = onboardingPages.firstIndex(of: currentVC) else { return }
         
         if index == 0 {
-            textLabel.text = "Отслеживайте только то, что хотите"
+            textLabel.text = NSLocalizedString("onboarding.page1.text", comment: "")
             backgroundImage.image = UIImage(named: "Onboarding1")
         } else {
-            textLabel.text = "Даже если это не литры воды и йога"
+            textLabel.text = NSLocalizedString("onboarding.page2.text", comment: "")
             backgroundImage.image = UIImage(named: "Onboarding2")
         }
     }

@@ -39,9 +39,11 @@ final class TrackerColorCell: UICollectionViewCell {
         if isSelected {
             cellBackground.layer.borderWidth = 3
             cellBackground.layer.borderColor = color.withAlphaComponent(0.3).cgColor
-            cellBackground.backgroundColor = .white
+            cellBackground.backgroundColor = .clear
         } else {
             cellBackground.layer.borderWidth = 0
+            cellBackground.layer.borderColor = nil
+            cellBackground.backgroundColor = .clear
         }
     }
     

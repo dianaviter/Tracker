@@ -41,7 +41,7 @@ final class TrackerCell: UICollectionViewCell {
         return button
     }()
     
-    private let cellBackground: UIView = {
+    let cellBackground: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 16
         view.clipsToBounds = true
@@ -54,6 +54,14 @@ final class TrackerCell: UICollectionViewCell {
         view.layer.cornerRadius = 12
         view.clipsToBounds = true
         return view
+    }()
+    
+    private let pinImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "pin.fill") // или кастомную картинку
+        imageView.tintColor = .white
+        imageView.isHidden = true
+        return imageView
     }()
     
     override init(frame: CGRect) {
@@ -72,19 +80,15 @@ final class TrackerCell: UICollectionViewCell {
     
     func configure(tracker: Tracker, isCompleted: Bool, daysCount: Int) {
         cellTextLabel.text = tracker.name
+        cellTextLabel.textColor = .white
         cellEmoji.text = tracker.emoji ?? "🙂"
         cellBackground.backgroundColor = tracker.color
         
-        let remainder10 = daysCount % 10
-        let remainder100 = daysCount % 100
-        
-        if remainder10 == 1 && !(11...19).contains(remainder100) {
-            cellDays.text = ("\(daysCount) день")
-        } else if (2...4).contains(remainder10) && !(11...19).contains(remainder100) {
-            cellDays.text = ("\(daysCount) дня")
-        } else {
-            cellDays.text = ("\(daysCount) дней")
-        }
+        let localizedDays = String.localizedStringWithFormat(
+            NSLocalizedString("tracker.days.count", comment: ""),
+            daysCount
+        )
+        cellDays.text = localizedDays
         
         if isCompleted {
             cellButton.backgroundColor = tracker.color?.withAlphaComponent(0.8)
@@ -93,10 +97,12 @@ final class TrackerCell: UICollectionViewCell {
             cellButton.backgroundColor = tracker.color
             cellButton.setImage(UIImage(systemName: "plus"), for: .normal)
         }
+        
+        pinImageView.isHidden = !tracker.isPinned
     }
     
     private func setUpConstraints() {
-        [cellEmoji, cellDays, cellButton, cellBackground, cellTextLabel, emojiBackground].forEach {
+        [cellEmoji, cellDays, cellButton, cellBackground, cellTextLabel, emojiBackground, pinImageView].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
@@ -104,6 +110,7 @@ final class TrackerCell: UICollectionViewCell {
         cellBackground.addSubview(emojiBackground)
         cellBackground.addSubview(cellEmoji)
         cellBackground.addSubview(cellTextLabel)
+        cellBackground.addSubview(pinImageView)
         contentView.addSubview(cellDays)
         contentView.addSubview(cellButton)
         
@@ -132,7 +139,12 @@ final class TrackerCell: UICollectionViewCell {
             cellButton.topAnchor.constraint(equalTo: cellBackground.bottomAnchor, constant: 8),
             cellButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
             cellButton.widthAnchor.constraint(equalToConstant: 34),
-            cellButton.heightAnchor.constraint(equalToConstant: 34)
+            cellButton.heightAnchor.constraint(equalToConstant: 34),
+            
+            pinImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 18),
+            pinImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
+            pinImageView.widthAnchor.constraint(equalToConstant: 12),
+            pinImageView.heightAnchor.constraint(equalToConstant: 12)
         ])
     }
 }
