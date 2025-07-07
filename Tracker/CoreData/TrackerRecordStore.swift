@@ -27,6 +27,7 @@ protocol TrackerRecordStoreDelegate: AnyObject {
 }
 
 final class TrackerRecordStore: NSObject {
+    static var shared: TrackerRecordStore?
     private var context: NSManagedObjectContext
     var fetchedResultsController: NSFetchedResultsController<TrackerRecordCoreData>
     
@@ -98,6 +99,19 @@ final class TrackerRecordStore: NSObject {
     func deleteRecord(_ record: TrackerRecordCoreData) throws {
         context.delete(record)
         try context.save()
+    }
+    
+    func numberOfRecords(for trackerID: UUID) -> Int {
+        let fetchRequest: NSFetchRequest<TrackerRecordCoreData> = TrackerRecordCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", trackerID as CVarArg)
+
+        do {
+            let count = try context.count(for: fetchRequest)
+            return count
+        } catch {
+            print("Error counting records for tracker \(trackerID): \(error)")
+            return 0
+        }
     }
 }
 

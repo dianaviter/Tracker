@@ -11,8 +11,8 @@ final class CreateIrregularEventViewController: UIViewController {
     
     // MARK: - Properties
     
-    let tableOptions: [String] = ["Категория"]
-    var defaultCategory = TrackerCategory(header: "Все трекеры", trackers: [])
+    let tableOptions: [String] = [NSLocalizedString("createhabit.category.title", comment: "")]
+    var defaultCategory = TrackerCategory(header: NSLocalizedString("createhabit.default.category", comment: ""), trackers: [])
     var onCreateTracker: ((Tracker, TrackerCategory) -> Void)?
     private var tableViewTopConstraint: NSLayoutConstraint?
     let emojiCollection = EmojiCollectionView()
@@ -37,13 +37,14 @@ final class CreateIrregularEventViewController: UIViewController {
         tableView.layer.cornerRadius = 16
         tableView.clipsToBounds = true
         tableView.separatorStyle = .singleLine
+        tableView.separatorColor = .trackerGray
         tableView.rowHeight = 75
         return tableView
     }()
     
     private let textLabel: UILabel = {
         let label = UILabel()
-        label.text = "Новое нерегулярное событие"
+        label.text = NSLocalizedString("createirregularevent.title", comment: "")
         label.textColor = .trackerBlack
         label.font = .systemFont(ofSize: 16, weight: .medium)
         return label
@@ -51,7 +52,13 @@ final class CreateIrregularEventViewController: UIViewController {
     
     private let trackerNameTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Введите название трекера"
+        textField.attributedPlaceholder = NSAttributedString(
+            string: NSLocalizedString("createhabit.trackername.placeholder", comment: ""),
+            attributes: [
+                .foregroundColor: UIColor.lightGray,
+                .font: UIFont.systemFont(ofSize: 17, weight: .regular)
+            ]
+        )
         textField.font = .systemFont(ofSize: 17, weight: .regular)
         textField.layer.cornerRadius = 16
         textField.clipsToBounds = true
@@ -63,7 +70,7 @@ final class CreateIrregularEventViewController: UIViewController {
     
     private let cancelButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Отменить", for: .normal)
+        button.setTitle(NSLocalizedString("createhabit.cancel.button", comment: ""), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 17, weight: .medium)
         button.setTitleColor(.trackerRed, for: .normal)
         button.layer.borderWidth = 1
@@ -75,10 +82,10 @@ final class CreateIrregularEventViewController: UIViewController {
     
     private let createButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Создать", for: .normal)
+        button.setTitle(NSLocalizedString("createhabit.create.button", comment: ""), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.titleLabel?.textColor = .white
-        button.backgroundColor = .trackerGray
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .white
         button.layer.cornerRadius = 16
         button.clipsToBounds = true
         return button
@@ -96,7 +103,7 @@ final class CreateIrregularEventViewController: UIViewController {
     
     private let errorLabel: UILabel = {
         let label = UILabel()
-        label.text = "Ограничение 38 символов"
+        label.text = NSLocalizedString("createhabit.characterlimit.error", comment: "")
         label.font = .systemFont(ofSize: 17, weight: .regular)
         label.textColor = .trackerRed
         label.isHidden = true
@@ -107,7 +114,7 @@ final class CreateIrregularEventViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .trackerWhite
         setUpConstraints()
         tableView.dataSource = self
         tableView.delegate = self
@@ -136,6 +143,8 @@ final class CreateIrregularEventViewController: UIViewController {
         createButton.addTarget(self, action: #selector(createButtonTapped(_:)), for: .touchUpInside)
         trackerNameTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         clearButton.addTarget(self, action: #selector(clearButtonTapped), for: .touchUpInside)
+        
+        activateCreateButton()
     }
     
     // MARK: - Actions
@@ -151,7 +160,8 @@ final class CreateIrregularEventViewController: UIViewController {
             name: trackerNameTextField.text,
             color: selectedColor,
             emoji: selectedEmoji,
-            schedule: nil
+            schedule: nil,
+            isPinned: false
         )
         onCreateTracker?(newTracker, category)
         dismiss(animated: true)
@@ -185,7 +195,7 @@ final class CreateIrregularEventViewController: UIViewController {
             && isColorSelected == true {
             createButton.isEnabled = true
             createButton.backgroundColor = .trackerBlack
-            createButton.titleLabel?.textColor = .trackerWhite
+            createButton.setTitleColor(.trackerWhite, for: .normal)
         } else {
             createButton.isEnabled = false
             createButton.backgroundColor = .trackerGray
@@ -292,7 +302,7 @@ extension CreateIrregularEventViewController: UITableViewDataSource {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: TrackerCell.cellIdentifier)
         cell.textLabel?.text = tableOptions[indexPath.row]
         cell.textLabel?.font = .systemFont(ofSize: 17, weight: .regular)
-        cell.textLabel?.textColor = .black
+        cell.textLabel?.textColor = .trackerBlack
         cell.backgroundColor = .trackerBackground
         cell.accessoryType = .disclosureIndicator
         cell.detailTextLabel?.font = .systemFont(ofSize: 17, weight: .regular)
@@ -316,7 +326,7 @@ extension CreateIrregularEventViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         
         if indexPath.row == 0 {
-            guard let store = try? TrackerCategoryStore(context: coreDataStack.context) else { return }
+            guard let store = try? TrackerCategoryStore(context: context) else { return }
 
             let viewModel = CategoryViewModel(store: store)
             let vcCategory = CategoryViewController(viewModel: viewModel, selectedCategory: self.selectedCategory)

@@ -77,7 +77,8 @@ final class TrackerStore: NSObject {
             name: name,
             color: color,
             emoji: emoji,
-            schedule: schedule
+            schedule: schedule,
+            isPinned: coreData.isPinned
         )
     }
     
@@ -87,10 +88,49 @@ final class TrackerStore: NSObject {
         object.name = tracker.name
         object.emoji = tracker.emoji
         object.color = colorMarshalling.hexString(from: tracker.color ?? .black)
+        object.isPinned = tracker.isPinned
         let scheduleData = scheduleMarshalling.data(from: tracker.schedule ?? [])
         object.schedule = scheduleData
         try context.save()
     }
+    
+    func togglePin(for tracker: Tracker) throws {
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", tracker.id as CVarArg)
+        
+        let objects = try context.fetch(fetchRequest)
+        
+        guard let object = objects.first else { return }
+        
+        object.isPinned.toggle()
+        
+        try context.save()
+    }
+    
+    func updateTracker(_ updatedTracker: Tracker, inCategoryWithHeader newCategoryHeader: String?) throws {
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", updatedTracker.id as CVarArg)
+
+        guard let trackerToUpdate = try context.fetch(fetchRequest).first else { return }
+
+        trackerToUpdate.name = updatedTracker.name
+        trackerToUpdate.emoji = updatedTracker.emoji
+        trackerToUpdate.color = colorMarshalling.hexString(from: updatedTracker.color ?? .black)
+        trackerToUpdate.schedule = scheduleMarshalling.data(from: updatedTracker.schedule ?? [])
+        trackerToUpdate.isPinned = updatedTracker.isPinned
+
+        if let newCategoryHeader = newCategoryHeader, trackerToUpdate.category?.header != newCategoryHeader {
+            let categoryRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
+            categoryRequest.predicate = NSPredicate(format: "header == %@", newCategoryHeader)
+
+            if let newCategory = try context.fetch(categoryRequest).first {
+                trackerToUpdate.category = newCategory
+            }
+        }
+
+        try context.save()
+    }
+
     
     func deleteTracker(_ tracker: Tracker) throws {
         let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
@@ -103,7 +143,6 @@ final class TrackerStore: NSObject {
         context.delete(objectToDelete)
         try context.save()
     }
-
 }
 
 extension TrackerStore: NSFetchedResultsControllerDelegate {
